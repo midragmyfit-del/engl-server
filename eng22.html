@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חזור אחרי - גילאי 8-10</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .instruction-box {
+            background: #d1ecf1;
+            border: 2px solid #17a2b8;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .instruction-box h3 {
+            color: #0c5460;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .instruction-box p {
+            color: #0c5460;
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        .level-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .level-btn {
+            padding: 15px 30px;
+            font-size: 1.3em;
+            background: #f0f0f0;
+            color: #333;
+            border: 3px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .level-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .level-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 60px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hebrew-prompt {
+            font-size: 3.5em;
+            color: white;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .english-word {
+            font-size: 2.2em;
+            color: white;
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: bold;
+            opacity: 0.95;
+            line-height: 1.4;
+        }
+
+        .action-instruction {
+            font-size: 1.6em;
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.2);
+            padding: 15px 30px;
+            border-radius: 10px;
+        }
+
+        .big-button {
+            padding: 25px 50px;
+            font-size: 2em;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            margin: 10px;
+        }
+
+        .btn-listen {
+            background: white;
+            color: #667eea;
+        }
+
+        .btn-listen:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+        }
+
+        .btn-correct {
+            background: #4CAF50;
+            color: white;
+            padding: 25px 50px;
+            border-radius: 15px;
+            font-size: 2em;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+            margin-top: 20px;
+        }
+
+        .btn-correct:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(76, 175, 80, 0.6);
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            background: #f0f0f0;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .score-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button:not(.big-button):not(.btn-correct) {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-next {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-next:hover {
+            background: #0b7dda;
+            transform: translateY(-2px);
+        }
+
+        .btn-skip {
+            background: #ff9800;
+            color: white;
+        }
+
+        .btn-skip:hover {
+            background: #e68900;
+            transform: translateY(-2px);
+        }
+
+        .feedback-animation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8em;
+            animation: feedbackPop 1s ease-out;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes feedbackPop {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .hebrew-prompt {
+                font-size: 2.2em;
+            }
+
+            .english-word {
+                font-size: 1.6em;
+            }
+
+            .btn-correct {
+                padding: 20px 40px;
+                font-size: 1.5em;
+            }
+
+            .big-button {
+                padding: 20px 40px;
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎤 חזור אחרי 🎤</h1>
+        <p class="subtitle">תרגול דיבור באנגלית - גילאי 8-10</p>
+
+        <div class="instruction-box">
+            <h3>👨‍👩‍👧 איך זה עובד?</h3>
+            <p>
+                1️⃣ הילד/ה רואה מילה או משפט בעברית<br>
+                2️⃣ לוחץ על 🔊 ושומע הגייה נכונה<br>
+                3️⃣ חוזר/ת אחרי ההגייה בקול רם!<br>
+                4️⃣ אם יצא נכון - ההורה לוחץ ✅<br>
+                5️⃣ אם לא יצא - מנסים שוב (לוחצים שוב על 🔊)
+            </p>
+        </div>
+
+        <div class="level-buttons">
+            <button class="level-btn active" onclick="setLevel('words')">📚 מילים</button>
+            <button class="level-btn" onclick="setLevel('sentences')">💬 משפטים</button>
+        </div>
+
+        <div class="score-board">
+            <div class="score-item">
+                <div class="score-label">הצלחות 🌟</div>
+                <div class="score-value" id="successScore">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">מתוך</div>
+                <div class="score-value" id="totalScore">10</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="hebrew-prompt" id="hebrewPrompt">רופא/ה</div>
+            <div class="english-word" id="englishWord">Doctor</div>
+            
+            <button class="big-button btn-listen" onclick="speakWord()">
+                🔊 שמע הגייה
+            </button>
+
+            <div class="action-instruction">
+                עכשיו חזור/י אחרי ההגייה!<br>
+                כשיצא נכון - לחץ ✅
+            </div>
+
+            <button class="btn-correct" onclick="markCorrect()" title="הצלחת!">✅ הצלחת!</button>
+        </div>
+
+        <div class="controls">
+            <button class="btn-skip" onclick="skipWord()">⏭️ דלג</button>
+            <button class="btn-next" onclick="nextWord()">הבא ➡️</button>
+        </div>
+    </div>
+
+    <script>
+        // מילים מתקדמות לתרגול
+        const words = [
+            { hebrew: '👨‍⚕️ רופא/ה', english: 'Doctor' },
+            { hebrew: '👨‍🏫 מורה', english: 'Teacher' },
+            { hebrew: '👮 שוטר/ת', english: 'Police officer' },
+            { hebrew: '🚒 כבאי/ת', english: 'Firefighter' },
+            { hebrew: '👨‍🍳 שף', english: 'Chef' },
+            { hebrew: '📚 ספר', english: 'Book' },
+            { hebrew: '✏️ עיפרון', english: 'Pencil' },
+            { hebrew: '📝 מחברת', english: 'Notebook' },
+            { hebrew: '🎒 תיק', english: 'Backpack' },
+            { hebrew: '🚿 מקלחת', english: 'Shower' },
+            { hebrew: '🪞 מראה', english: 'Mirror' },
+            { hebrew: '🖼️ תמונה', english: 'Picture' },
+            { hebrew: '🌳 עץ', english: 'Tree' },
+            { hebrew: '🌸 פרח', english: 'Flower' },
+            { hebrew: '🦊 שועל', english: 'Fox' }
+        ];
+
+        // משפטים מתקדמים לתרגול
+        const sentences = [
+            { hebrew: 'שמי... ואני בן/בת 9', english: 'My name is... and I am nine years old' },
+            { hebrew: 'אני גר/ה בתל אביב', english: 'I live in Tel Aviv' },
+            { hebrew: 'הצבע האהוב עליי הוא כחול', english: 'My favorite color is blue' },
+            { hebrew: 'יש לי שני אחים', english: 'I have two brothers' },
+            { hebrew: 'אני לומד/ת בכיתה ג׳', english: 'I study in third grade' },
+            { hebrew: 'אני הולך/ת לבית הספר כל יום', english: 'I go to school every day' },
+            { hebrew: 'המקצוע האהוב עליי הוא מתמטיקה', english: 'My favorite subject is math' },
+            { hebrew: 'אני עושה שיעורי בית', english: 'I do my homework' },
+            { hebrew: 'אני משחק/ת עם החברים שלי', english: 'I play with my friends' },
+            { hebrew: 'אני אוהב/ת לקרוא ספרים', english: 'I love reading books' },
+            { hebrew: 'אני רוכב/ת על האופניים', english: 'I ride my bike' },
+            { hebrew: 'אני רוצה להיות רופא/ה', english: 'I want to be a doctor' },
+            { hebrew: 'אני מאמין/ה שאני יכול/ה להצליח', english: 'I believe I can succeed' },
+            { hebrew: 'המורה שלי מאוד נחמד/ה', english: 'My teacher is very nice' },
+            { hebrew: 'אני נהנה/ת ללמוד דברים חדשים', english: 'I enjoy learning new things' }
+        ];
+
+        let currentLevel = 'words';
+        let currentItems = [...words];
+        let currentIndex = 0;
+        let currentItem = null;
+        let successCount = 0;
+        const MAX_ITEMS = 10;
+
+        // ערבוב מערך
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // החלפת רמה
+        function setLevel(level) {
+            currentLevel = level;
+            successCount = 0;
+            currentIndex = 0;
+            
+            // עדכון כפתורים
+            document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // החלפת תוכן
+            if (level === 'words') {
+                currentItems = [...words];
+            } else {
+                currentItems = [...sentences];
+            }
+            
+            shuffleArray(currentItems);
+            updateScoreBoard();
+            loadItem();
+        }
+
+        // טעינת פריט
+        function loadItem() {
+            if (currentIndex >= currentItems.length) {
+                currentIndex = 0;
+                shuffleArray(currentItems);
+            }
+            
+            currentItem = currentItems[currentIndex];
+            document.getElementById('hebrewPrompt').textContent = currentItem.hebrew;
+            document.getElementById('englishWord').textContent = currentItem.english;
+        }
+
+        // פריט הבא
+        function nextWord() {
+            currentIndex++;
+            loadItem();
+        }
+
+        // דילוג
+        function skipWord() {
+            currentIndex++;
+            loadItem();
+        }
+
+        // הגייה
+        function speakWord() {
+            if (!currentItem) return;
+            
+            speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(currentItem.english);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.75; // מהיר יותר מגילאי 6-8
+            
+            speechSynthesis.speak(utterance);
+        }
+
+        // סימון נכון
+        function markCorrect() {
+            successCount++;
+            updateScoreBoard();
+            
+            // בדיקה אם הגענו ל-10
+            if (successCount >= MAX_ITEMS) {
+                showFeedbackAnimation('🎉');
+                
+                setTimeout(() => {
+                    const utterance = new SpeechSynthesisUtterance('Excellent! You finished!');
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.9;
+                    speechSynthesis.speak(utterance);
+                }, 200);
+                
+                setTimeout(() => {
+                    showFinalSummary();
+                }, 2000);
+                return;
+            }
+            
+            showFeedbackAnimation('🎉');
+            
+            setTimeout(() => {
+                const utterance = new SpeechSynthesisUtterance('Excellent!');
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                speechSynthesis.speak(utterance);
+            }, 200);
+            
+            setTimeout(() => {
+                nextWord();
+            }, 1500);
+        }
+
+        // הצגת אנימציה
+        function showFeedbackAnimation(emoji) {
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = 'feedback-animation';
+            feedbackDiv.textContent = emoji;
+            document.body.appendChild(feedbackDiv);
+            
+            setTimeout(() => {
+                feedbackDiv.remove();
+            }, 1000);
+        }
+
+        // עדכון ניקוד
+        function updateScoreBoard() {
+            document.getElementById('successScore').textContent = successCount;
+        }
+
+        // סיכום סופי
+        function showFinalSummary() {
+            const percentage = (successCount / MAX_ITEMS) * 100;
+            let emoji, message;
+            
+            if (percentage >= 90) {
+                emoji = '🏆';
+                message = 'מעולה! ציון מושלם!';
+            } else if (percentage >= 80) {
+                emoji = '🌟';
+                message = 'כל הכבוד! עבודה נהדרת!';
+            } else if (percentage >= 70) {
+                emoji = '👍';
+                message = 'יפה מאוד!';
+            } else {
+                emoji = '💪';
+                message = 'התחלה טובה!';
+            }
+            
+            const card = document.querySelector('.card');
+            card.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="font-size: 8em; margin-bottom: 30px;">${emoji}</div>
+                    <h2 style="font-size: 3em; color: white; margin-bottom: 30px;">${message}</h2>
+                    <div style="font-size: 4em; font-weight: bold; color: white; margin-bottom: 20px;">
+                        ${successCount} מתוך ${MAX_ITEMS}
+                    </div>
+                    <div style="font-size: 2.5em; color: white; margin-bottom: 40px;">${Math.round(percentage)}% 🎉</div>
+                    <button class="big-button btn-listen" onclick="restartPractice()">
+                        🔄 תרגול חדש
+                    </button>
+                </div>
+            `;
+        }
+
+        // התחלה מחדש
+        function restartPractice() {
+            successCount = 0;
+            currentIndex = 0;
+            shuffleArray(currentItems);
+            updateScoreBoard();
+            
+            const card = document.querySelector('.card');
+            card.innerHTML = `
+                <div class="hebrew-prompt" id="hebrewPrompt"></div>
+                <div class="english-word" id="englishWord"></div>
+                
+                <button class="big-button btn-listen" onclick="speakWord()">
+                    🔊 שמע הגייה
+                </button>
+
+                <div class="action-instruction">
+                    עכשיו חזור/י אחרי ההגייה!<br>
+                    כשיצא נכון - לחץ ✅
+                </div>
+
+                <button class="btn-correct" onclick="markCorrect()" title="הצלחת!">✅ הצלחת!</button>
+            `;
+            
+            loadItem();
+        }
+
+        // אתחול
+        shuffleArray(currentItems);
+        loadItem();
+    </script>
+</body>
+</html>

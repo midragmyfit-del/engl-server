@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>משחק זיכרון - אנגלית 8-10</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            background: #f0f0f0;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .score-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            transition: all 0.3s;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .card:hover:not(.flipped):not(.matched) {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .card.flipped, .card.matched {
+            background: white;
+            border: 3px solid #667eea;
+            color: #333;
+        }
+
+        .card.matched {
+            background: #e8f5e9;
+            border-color: #4CAF50;
+            animation: matchPulse 0.5s ease;
+        }
+
+        @keyframes matchPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .card.wrong {
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .card-back {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: white;
+        }
+
+        .card-front {
+            display: none;
+        }
+
+        .card.flipped .card-back,
+        .card.matched .card-back {
+            display: none;
+        }
+
+        .card.flipped .card-front,
+        .card.matched .card-front {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .card-emoji {
+            font-size: 2em;
+        }
+
+        .card-text {
+            font-size: 0.9em;
+            font-weight: bold;
+            direction: ltr;
+            text-align: center;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-restart {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-restart:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .btn-back {
+            background: #ff9800;
+            color: white;
+        }
+
+        .btn-back:hover {
+            background: #e68900;
+            transform: translateY(-2px);
+        }
+
+        .win-screen {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .win-screen.active {
+            display: block;
+        }
+
+        .win-emoji {
+            font-size: 8em;
+            margin-bottom: 20px;
+        }
+
+        .win-message {
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .win-stats {
+            font-size: 1.5em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+
+            .card {
+                font-size: 1.8em;
+            }
+
+            .card-emoji {
+                font-size: 1.5em;
+            }
+
+            .card-text {
+                font-size: 0.7em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="gameScreen">
+            <h1>🎮 משחק זיכרון 🎮</h1>
+            <p class="subtitle">מצא את הזוגות! - גילאי 8-10</p>
+
+            <div class="score-board">
+                <div class="score-item">
+                    <div class="score-label">זוגות שנמצאו 🎯</div>
+                    <div class="score-value" id="pairsFound">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">ניסיונות 🔄</div>
+                    <div class="score-value" id="attempts">0</div>
+                </div>
+            </div>
+
+            <div class="cards-grid" id="cardsGrid"></div>
+
+            <div class="controls">
+                <button class="btn-restart" onclick="restartGame()">🔄 התחל מחדש</button>
+            </div>
+        </div>
+
+        <div id="winScreen" class="win-screen">
+            <div class="win-emoji">🏆</div>
+            <div class="win-message">כל הכבוד! מצאת את כל הזוגות!</div>
+            <div class="win-stats" id="winStats"></div>
+            <div class="controls">
+                <button class="btn-restart" onclick="restartGame()">🔄 שחק שוב</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // זוגות מילים לזיכרון - מילים מתקדמות יותר
+        const pairs = [
+            { word: 'Doctor', emoji: '👨‍⚕️' },
+            { word: 'Teacher', emoji: '👨‍🏫' },
+            { word: 'Police', emoji: '👮' },
+            { word: 'Chef', emoji: '👨‍🍳' },
+            { word: 'Notebook', emoji: '📓' },
+            { word: 'Mirror', emoji: '🪞' },
+            { word: 'Rainbow', emoji: '🌈' },
+            { word: 'Pizza', emoji: '🍕' }
+        ];
+
+        let cards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let attempts = 0;
+        let canFlip = true;
+
+        // יצירת כרטיסים
+        function createCards() {
+            cards = [];
+            
+            // יצירת זוגות
+            pairs.forEach(pair => {
+                // כרטיס עם מילה
+                cards.push({
+                    id: Math.random(),
+                    type: 'word',
+                    value: pair.word,
+                    emoji: pair.emoji,
+                    matched: false,
+                    flipped: false
+                });
+                
+                // כרטיס עם אימוג'י
+                cards.push({
+                    id: Math.random(),
+                    type: 'emoji',
+                    value: pair.emoji,
+                    word: pair.word,
+                    matched: false,
+                    flipped: false
+                });
+            });
+            
+            // ערבוב
+            shuffleArray(cards);
+        }
+
+        // ערבוב מערך
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // רינדור הכרטיסים
+        function renderCards() {
+            const grid = document.getElementById('cardsGrid');
+            grid.innerHTML = '';
+            
+            cards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.dataset.index = index;
+                
+                if (card.matched) {
+                    cardElement.classList.add('matched');
+                }
+                if (card.flipped) {
+                    cardElement.classList.add('flipped');
+                }
+                
+                cardElement.innerHTML = `
+                    <div class="card-back">🎴</div>
+                    <div class="card-front">
+                        ${card.type === 'emoji' ? 
+                            `<div class="card-emoji">${card.value}</div>` :
+                            `<div class="card-emoji">${card.emoji}</div><div class="card-text">${card.value}</div>`
+                        }
+                    </div>
+                `;
+                
+                cardElement.addEventListener('click', () => flipCard(index));
+                grid.appendChild(cardElement);
+            });
+        }
+
+        // הפיכת כרטיס
+        function flipCard(index) {
+            if (!canFlip) return;
+            if (cards[index].matched) return;
+            if (cards[index].flipped) return;
+            if (flippedCards.length >= 2) return;
+            
+            cards[index].flipped = true;
+            flippedCards.push(index);
+            renderCards();
+            
+            // הגייה של המילה כשהופכים כרטיס
+            const card = cards[index];
+            const wordToSpeak = card.type === 'word' ? card.value : card.word;
+            speakWord(wordToSpeak);
+            
+            if (flippedCards.length === 2) {
+                canFlip = false;
+                attempts++;
+                updateScoreboard();
+                setTimeout(checkMatch, 800);
+            }
+        }
+
+        // בדיקת התאמה
+        function checkMatch() {
+            const [index1, index2] = flippedCards;
+            const card1 = cards[index1];
+            const card2 = cards[index2];
+            
+            let isMatch = false;
+            
+            // בדיקה אם זה זוג תואם
+            if (card1.type === 'word' && card2.type === 'emoji') {
+                isMatch = card1.value === card2.word;
+            } else if (card1.type === 'emoji' && card2.type === 'word') {
+                isMatch = card1.word === card2.value;
+            }
+            
+            if (isMatch) {
+                // זוג נכון!
+                cards[index1].matched = true;
+                cards[index2].matched = true;
+                matchedPairs++;
+                updateScoreboard();
+                
+                // הגייה של המילה
+                const word = card1.type === 'word' ? card1.value : card2.value;
+                speakWord(word);
+                
+                // בדיקה אם גמרנו
+                if (matchedPairs === pairs.length) {
+                    setTimeout(showWinScreen, 1000);
+                }
+            } else {
+                // זוג לא נכון
+                const cardElements = document.querySelectorAll('.card');
+                cardElements[index1].classList.add('wrong');
+                cardElements[index2].classList.add('wrong');
+                
+                setTimeout(() => {
+                    cards[index1].flipped = false;
+                    cards[index2].flipped = false;
+                    renderCards();
+                }, 1000);
+            }
+            
+            flippedCards = [];
+            canFlip = true;
+        }
+
+        // הגייה
+        function speakWord(word) {
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.75;
+            speechSynthesis.speak(utterance);
+        }
+
+        // עדכון לוח ניקוד
+        function updateScoreboard() {
+            document.getElementById('pairsFound').textContent = matchedPairs;
+            document.getElementById('attempts').textContent = attempts;
+        }
+
+        // מסך ניצחון
+        function showWinScreen() {
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('winScreen').classList.add('active');
+            
+            const accuracy = Math.round((pairs.length / attempts) * 100);
+            document.getElementById('winStats').innerHTML = `
+                מצאת ${matchedPairs} זוגות ב-${attempts} ניסיונות!<br>
+                דיוק: ${accuracy}% 🎯
+            `;
+            
+            // הגייה
+            setTimeout(() => {
+                const utterance = new SpeechSynthesisUtterance('Excellent! You won!');
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            }, 500);
+        }
+
+        // התחלה מחדש
+        function restartGame() {
+            matchedPairs = 0;
+            attempts = 0;
+            flippedCards = [];
+            canFlip = true;
+            
+            document.getElementById('gameScreen').style.display = 'block';
+            document.getElementById('winScreen').classList.remove('active');
+            
+            createCards();
+            renderCards();
+            updateScoreboard();
+        }
+
+        // אתחול
+        createCards();
+        renderCards();
+    </script>
+</body>
+</html>

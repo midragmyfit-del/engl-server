@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אנגלית לילדים - גילאי 8-10</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.3s;
+            color: #666;
+        }
+
+        .tab:hover {
+            background: #e0e0e0;
+        }
+
+        .tab.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .content {
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .word-display {
+            font-size: 4.5em;
+            color: white;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .translation {
+            font-size: 2.8em;
+            color: #fff;
+            margin-bottom: 30px;
+            text-align: center;
+            opacity: 0.95;
+        }
+
+        .sentence-display {
+            font-size: 2em;
+            color: white;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.5;
+        }
+
+        .sentence-translation {
+            font-size: 1.6em;
+            color: #fff;
+            text-align: center;
+            opacity: 0.95;
+            line-height: 1.5;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-next {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-next:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-prev {
+            background: #ff9800;
+            color: white;
+        }
+
+        .btn-prev:hover {
+            background: #e68900;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+        }
+
+        .btn-speak {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-speak:hover {
+            background: #0b7dda;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+        }
+
+        .btn-random {
+            background: #e91e63;
+            color: white;
+        }
+
+        .btn-random:hover {
+            background: #c2185b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
+        }
+
+        .progress {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.3em;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .category-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .category-btn {
+            padding: 20px;
+            font-size: 1.3em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .category-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .word-display {
+                font-size: 2.8em;
+            }
+
+            .translation {
+                font-size: 1.8em;
+            }
+
+            .sentence-display {
+                font-size: 1.5em;
+            }
+
+            .sentence-translation {
+                font-size: 1.2em;
+            }
+
+            .tab {
+                font-size: 1em;
+                padding: 12px;
+            }
+
+            button {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+
+            .category-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .quiz-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .quiz-listen-btn {
+            background: #2196F3;
+            color: white;
+            padding: 20px 35px;
+            font-size: 2.5em;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+            transition: all 0.3s;
+        }
+
+        .quiz-listen-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(33, 150, 243, 0.6);
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-option {
+            padding: 25px;
+            font-size: 2.5em;
+            background: #f0f0f0;
+            border: 4px solid transparent;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quiz-option:hover {
+            background: #e0e0e0;
+            transform: scale(1.05);
+        }
+
+        .quiz-option.correct {
+            background: #4CAF50;
+            color: white;
+            border-color: #45a049;
+            animation: celebrate 0.5s;
+        }
+
+        .quiz-option.wrong {
+            background: #f44336;
+            color: white;
+            border-color: #da190b;
+            animation: shake 0.5s;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        .quiz-score {
+            text-align: center;
+            font-size: 1.6em;
+            color: #667eea;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .quiz-instruction {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .parent-note {
+            background: #d1ecf1;
+            border: 2px solid #17a2b8;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.1em;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌟 אנגלית לילדים 🌟</h1>
+        <p class="subtitle">למד אנגלית ברמה מתקדמת! (גילאי 8-10)</p>
+        
+        <div class="parent-note">
+            📚 <strong>רמה מתקדמת:</strong> אוצר מילים עשיר יותר, משפטים מורכבים וחידונים מאתגרים!
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('words')">📚 מילים</button>
+            <button class="tab" onclick="switchTab('sentences')">💬 משפטים</button>
+            <button class="tab" onclick="switchTab('quiz')">🎯 חידון</button>
+        </div>
+
+        <!-- תוכן מילים -->
+        <div id="words" class="content active">
+            <div class="category-buttons" id="wordCategories"></div>
+            <div class="card">
+                <div class="word-display" id="wordDisplay"></div>
+                <div class="translation" id="wordTranslation"></div>
+            </div>
+            <div class="controls">
+                <button class="btn-prev" onclick="previousWord()">⏮️ הקודם</button>
+                <button class="btn-speak" onclick="speakWord()">🔊 הגייה</button>
+                <button class="btn-random" onclick="randomWord()">🎲 אקראי</button>
+                <button class="btn-next" onclick="nextWord()">הבא ⏭️</button>
+            </div>
+            <div class="progress" id="wordProgress"></div>
+        </div>
+
+        <!-- תוכן משפטים -->
+        <div id="sentences" class="content">
+            <div class="category-buttons" id="sentenceCategories"></div>
+            <div class="card">
+                <div class="sentence-display" id="sentenceDisplay"></div>
+                <div class="sentence-translation" id="sentenceTranslation"></div>
+            </div>
+            <div class="controls">
+                <button class="btn-prev" onclick="previousSentence()">⏮️ הקודם</button>
+                <button class="btn-speak" onclick="speakSentence()">🔊 הגייה</button>
+                <button class="btn-random" onclick="randomSentence()">🎲 אקראי</button>
+                <button class="btn-next" onclick="nextSentence()">הבא ⏭️</button>
+            </div>
+            <div class="progress" id="sentenceProgress"></div>
+        </div>
+
+        <!-- תוכן חידון -->
+        <div id="quiz" class="content">
+            <div class="quiz-container">
+                <div class="quiz-instruction">🔊 לחץ על הכפתור ותשמע מילה או משפט באנגלית</div>
+                <button class="quiz-listen-btn" onclick="playQuizAudio()">🔊</button>
+                <div class="quiz-question" id="quizQuestion">מה התרגום?</div>
+                <div class="quiz-options" id="quizOptions"></div>
+                <div class="quiz-score" id="quizScore"></div>
+            </div>
+            <div class="controls">
+                <button class="btn-speak" onclick="playQuizAudio()">🔊 שמע שוב</button>
+                <button class="btn-next" onclick="nextQuestion()">שאלה הבאה ⏭️</button>
+                <button class="btn-random" onclick="restartQuiz()">🔄 התחל מחדש</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // מילים מסודרות לפי קטגוריות - 10 מילים בכל קטגוריה
+        const wordCategories = {
+            'בעלי חיים': [
+                { english: '🐕 Dog', hebrew: 'כלב' },
+                { english: '🐱 Cat', hebrew: 'חתול' },
+                { english: '🐘 Elephant', hebrew: 'פיל' },
+                { english: '🦁 Lion', hebrew: 'אריה' },
+                { english: '🐯 Tiger', hebrew: 'נמר' },
+                { english: '🐻 Bear', hebrew: 'דוב' },
+                { english: '🐰 Rabbit', hebrew: 'ארנב' },
+                { english: '🐦 Bird', hebrew: 'ציפור' },
+                { english: '🐟 Fish', hebrew: 'דג' },
+                { english: '🦊 Fox', hebrew: 'שועל' }
+            ],
+            'אוכל ומשקאות': [
+                { english: '🍎 Apple', hebrew: 'תפוח' },
+                { english: '🍌 Banana', hebrew: 'בננה' },
+                { english: '🍞 Bread', hebrew: 'לחם' },
+                { english: '🥛 Milk', hebrew: 'חלב' },
+                { english: '🍕 Pizza', hebrew: 'פיצה' },
+                { english: '🍰 Cake', hebrew: 'עוגה' },
+                { english: '🍪 Cookie', hebrew: 'עוגייה' },
+                { english: '🥕 Carrot', hebrew: 'גזר' },
+                { english: '🍅 Tomato', hebrew: 'עגבנייה' },
+                { english: '🧃 Juice', hebrew: 'מיץ' }
+            ],
+            'צבעים': [
+                { english: '🔴 Red', hebrew: 'אדום' },
+                { english: '🔵 Blue', hebrew: 'כחול' },
+                { english: '🟢 Green', hebrew: 'ירוק' },
+                { english: '🟡 Yellow', hebrew: 'צהוב' },
+                { english: '🟠 Orange', hebrew: 'כתום' },
+                { english: '🟣 Purple', hebrew: 'סגול' },
+                { english: '🟤 Brown', hebrew: 'חום' },
+                { english: '⚫ Black', hebrew: 'שחור' },
+                { english: '⚪ White', hebrew: 'לבן' },
+                { english: '🩷 Pink', hebrew: 'ורוד' }
+            ],
+            'הבית': [
+                { english: '🏠 House', hebrew: 'בית' },
+                { english: '🚪 Door', hebrew: 'דלת' },
+                { english: '🛏️ Bed', hebrew: 'מיטה' },
+                { english: '🛋️ Sofa', hebrew: 'ספה' },
+                { english: '🍽️ Table', hebrew: 'שולחן' },
+                { english: '💡 Lamp', hebrew: 'מנורה' },
+                { english: '📺 TV', hebrew: 'טלוויזיה' },
+                { english: '🚿 Shower', hebrew: 'מקלחת' },
+                { english: '🪞 Mirror', hebrew: 'מראה' },
+                { english: '🖼️ Picture', hebrew: 'תמונה' }
+            ],
+            'בית הספר': [
+                { english: '📚 Book', hebrew: 'ספר' },
+                { english: '✏️ Pencil', hebrew: 'עיפרון' },
+                { english: '📝 Notebook', hebrew: 'מחברת' },
+                { english: '🖍️ Crayon', hebrew: 'עפרון צבעוני' },
+                { english: '✂️ Scissors', hebrew: 'מספריים' },
+                { english: '📏 Ruler', hebrew: 'סרגל' },
+                { english: '🎒 Backpack', hebrew: 'תיק גב' },
+                { english: '🖊️ Pen', hebrew: 'עט' },
+                { english: '📐 Triangle', hebrew: 'משולש' },
+                { english: '🖌️ Brush', hebrew: 'מכחול' }
+            ],
+            'מקצועות וחלומות': [
+                { english: '👨‍⚕️ Doctor', hebrew: 'רופא' },
+                { english: '👨‍🏫 Teacher', hebrew: 'מורה' },
+                { english: '👮 Police', hebrew: 'שוטר' },
+                { english: '🚒 Firefighter', hebrew: 'כבאי' },
+                { english: '👨‍🍳 Chef', hebrew: 'שף' },
+                { english: '👨‍✈️ Pilot', hebrew: 'טייס' },
+                { english: '🧑‍🎨 Artist', hebrew: 'אמן' },
+                { english: '🧑‍💻 Programmer', hebrew: 'מתכנת' },
+                { english: '⚽ Athlete', hebrew: 'ספורטאי' },
+                { english: '🎤 Singer', hebrew: 'זמר' }
+            ]
+        };
+
+        // משפטים מתקדמים - 8 משפטים בכל קטגוריה
+        const sentenceCategories = {
+            'הצגה עצמית': [
+                { english: 'My name is David', hebrew: 'שמי דוד' },
+                { english: 'I am 9 years old', hebrew: 'אני בן/בת 9' },
+                { english: 'I live in Tel Aviv', hebrew: 'אני גר/ה בתל אביב' },
+                { english: 'My favorite color is blue', hebrew: 'הצבע האהוב עליי הוא כחול' },
+                { english: 'I have two brothers', hebrew: 'יש לי שני אחים' },
+                { english: 'I study in third grade', hebrew: 'אני לומד/ת בכיתה ג' },
+                { english: 'Nice to meet you', hebrew: 'נעים להכיר' },
+                { english: 'I speak Hebrew and English', hebrew: 'אני מדבר/ת עברית ואנגלית' }
+            ],
+            'בית הספר': [
+                { english: 'I go to school every day', hebrew: 'אני הולך/ת לבית הספר כל יום' },
+                { english: 'My favorite subject is math', hebrew: 'המקצוע האהוב עליי הוא מתמטיקה' },
+                { english: 'I do my homework', hebrew: 'אני עושה שיעורי בית' },
+                { english: 'I play with my friends', hebrew: 'אני משחק/ת עם החברים שלי' },
+                { english: 'We have a test tomorrow', hebrew: 'יש לנו מבחן מחר' },
+                { english: 'I read books in English', hebrew: 'אני קורא/ת ספרים באנגלית' },
+                { english: 'My teacher is very nice', hebrew: 'המורה שלי מאוד נחמד/ה' },
+                { english: 'I love learning new things', hebrew: 'אני אוהב/ת ללמוד דברים חדשים' }
+            ],
+            'תחביבים ופעילויות': [
+                { english: 'I like to play soccer', hebrew: 'אני אוהב/ת לשחק כדורגל' },
+                { english: 'I can swim very well', hebrew: 'אני יודע/ת לשחות טוב מאוד' },
+                { english: 'I draw pictures every day', hebrew: 'אני מציייר/ת תמונות כל יום' },
+                { english: 'I play the piano', hebrew: 'אני מנגן/ת בפסנתר' },
+                { english: 'I love reading books', hebrew: 'אני אוהב/ת לקרוא ספרים' },
+                { english: 'I watch movies on weekends', hebrew: 'אני צופה בסרטים בסופי שבוע' },
+                { english: 'I ride my bike to school', hebrew: 'אני רוכב/ת על האופניים לבית הספר' },
+                { english: 'I enjoy playing video games', hebrew: 'אני נהנה/ת לשחק משחקי מחשב' }
+            ],
+            'משפחה וחברים': [
+                { english: 'I love my family', hebrew: 'אני אוהב/ת את המשפחה שלי' },
+                { english: 'My mom cooks delicious food', hebrew: 'אמא שלי מבשלת אוכל טעים' },
+                { english: 'My dad works in an office', hebrew: 'אבא שלי עובד במשרד' },
+                { english: 'I help my little sister', hebrew: 'אני עוזר/ת לאחות הקטנה שלי' },
+                { english: 'My best friend is Tom', hebrew: 'החבר הכי טוב שלי הוא תום' },
+                { english: 'We play together after school', hebrew: 'אנחנו משחקים ביחד אחרי בית הספר' },
+                { english: 'I visit my grandparents', hebrew: 'אני מבקר/ת את הסבא והסבתא שלי' },
+                { english: 'My brother is older than me', hebrew: 'אחי גדול ממני' }
+            ],
+            'חלומות ושאיפות': [
+                { english: 'I want to be a doctor', hebrew: 'אני רוצה להיות רופא/ה' },
+                { english: 'I dream of traveling the world', hebrew: 'אני חולם/ת לטייל בעולם' },
+                { english: 'I will study hard', hebrew: 'אני אלמד קשה' },
+                { english: 'I want to help people', hebrew: 'אני רוצה לעזור לאנשים' },
+                { english: 'My dream is to be a pilot', hebrew: 'החלום שלי הוא להיות טייס/ת' },
+                { english: 'I hope to go to university', hebrew: 'אני מקווה/ה ללכת לאוניברסיטה' },
+                { english: 'I want to learn many languages', hebrew: 'אני רוצה ללמוד הרבה שפות' },
+                { english: 'I believe I can succeed', hebrew: 'אני מאמין/ה שאני יכול/ה להצליח' }
+            ]
+        };
+
+        let currentWordCategory = Object.keys(wordCategories)[0];
+        let currentSentenceCategory = Object.keys(sentenceCategories)[0];
+        let currentWordIndex = 0;
+        let currentSentenceIndex = 0;
+        let currentTab = 'words';
+
+        // חידון
+        let quizScore = 0;
+        let quizTotal = 0;
+        let currentQuestion = null;
+        let answered = false;
+        const MAX_QUIZ_QUESTIONS = 10; // מספר השאלות המקסימלי בחידון
+        
+        // מניעת הגייה כפולה
+        let isSpeaking = false;
+        
+        // מניעת שאלות חוזרות - שומר את 10 השאלות האחרונות
+        let recentQuestions = [];
+
+        // אתחול
+        function init() {
+            createCategoryButtons();
+            updateWordDisplay();
+            updateSentenceDisplay();
+            generateQuizQuestion();
+        }
+
+        // יצירת כפתורי קטגוריות
+        function createCategoryButtons() {
+            const wordCategoriesDiv = document.getElementById('wordCategories');
+            const sentenceCategoriesDiv = document.getElementById('sentenceCategories');
+            
+            wordCategoriesDiv.innerHTML = '';
+            sentenceCategoriesDiv.innerHTML = '';
+
+            Object.keys(wordCategories).forEach(category => {
+                const btn = document.createElement('button');
+                btn.className = 'category-btn' + (category === currentWordCategory ? ' active' : '');
+                btn.textContent = category;
+                btn.onclick = () => selectWordCategory(category);
+                wordCategoriesDiv.appendChild(btn);
+            });
+
+            Object.keys(sentenceCategories).forEach(category => {
+                const btn = document.createElement('button');
+                btn.className = 'category-btn' + (category === currentSentenceCategory ? ' active' : '');
+                btn.textContent = category;
+                btn.onclick = () => selectSentenceCategory(category);
+                sentenceCategoriesDiv.appendChild(btn);
+            });
+        }
+
+        // בחירת קטגוריית מילים
+        function selectWordCategory(category) {
+            currentWordCategory = category;
+            currentWordIndex = 0;
+            createCategoryButtons();
+            updateWordDisplay();
+        }
+
+        // בחירת קטגוריית משפטים
+        function selectSentenceCategory(category) {
+            currentSentenceCategory = category;
+            currentSentenceIndex = 0;
+            createCategoryButtons();
+            updateSentenceDisplay();
+        }
+
+        // עדכון תצוגת מילה
+        function updateWordDisplay() {
+            const words = wordCategories[currentWordCategory];
+            const word = words[currentWordIndex];
+            document.getElementById('wordDisplay').textContent = word.english;
+            document.getElementById('wordTranslation').textContent = word.hebrew;
+            document.getElementById('wordProgress').textContent = `${currentWordIndex + 1} מתוך ${words.length}`;
+        }
+
+        // עדכון תצוגת משפט
+        function updateSentenceDisplay() {
+            const sentences = sentenceCategories[currentSentenceCategory];
+            const sentence = sentences[currentSentenceIndex];
+            document.getElementById('sentenceDisplay').textContent = sentence.english;
+            document.getElementById('sentenceTranslation').textContent = sentence.hebrew;
+            document.getElementById('sentenceProgress').textContent = `${currentSentenceIndex + 1} מתוך ${sentences.length}`;
+        }
+
+        // מילה הבאה
+        function nextWord() {
+            const words = wordCategories[currentWordCategory];
+            currentWordIndex = (currentWordIndex + 1) % words.length;
+            updateWordDisplay();
+        }
+
+        // מילה קודמת
+        function previousWord() {
+            const words = wordCategories[currentWordCategory];
+            currentWordIndex = currentWordIndex === 0 ? words.length - 1 : currentWordIndex - 1;
+            updateWordDisplay();
+        }
+
+        // מילה אקראית
+        function randomWord() {
+            const words = wordCategories[currentWordCategory];
+            currentWordIndex = Math.floor(Math.random() * words.length);
+            updateWordDisplay();
+        }
+
+        // משפט הבא
+        function nextSentence() {
+            const sentences = sentenceCategories[currentSentenceCategory];
+            currentSentenceIndex = (currentSentenceIndex + 1) % sentences.length;
+            updateSentenceDisplay();
+        }
+
+        // משפט קודם
+        function previousSentence() {
+            const sentences = sentenceCategories[currentSentenceCategory];
+            currentSentenceIndex = currentSentenceIndex === 0 ? sentences.length - 1 : currentSentenceIndex - 1;
+            updateSentenceDisplay();
+        }
+
+        // משפט אקראי
+        function randomSentence() {
+            const sentences = sentenceCategories[currentSentenceCategory];
+            currentSentenceIndex = Math.floor(Math.random() * sentences.length);
+            updateSentenceDisplay();
+        }
+
+        // הגייה של מילה
+        function speakWord() {
+            // מניעת הגייה כפולה
+            if (isSpeaking) return;
+            isSpeaking = true;
+            
+            // עצירת כל הגייה קודמת
+            speechSynthesis.cancel();
+            
+            const words = wordCategories[currentWordCategory];
+            const word = words[currentWordIndex];
+            // הסרת האימוג'י מהטקסט לפני ההגייה
+            let textToSpeak = word.english.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim();
+            // הוספת נקודה בסוף כדי לאלץ עצירה
+            if (!textToSpeak.endsWith('.')) {
+                textToSpeak += '.';
+            }
+            const utterance = new SpeechSynthesisUtterance(textToSpeak);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.8; // קצב מהיר יותר לגיל 8-10
+            
+            // כשההגייה נגמרת - נאפשר הגייה חדשה
+            utterance.onend = () => {
+                isSpeaking = false;
+            };
+            
+            utterance.onerror = () => {
+                isSpeaking = false;
+            };
+            
+            speechSynthesis.speak(utterance);
+        }
+
+        // הגייה של משפט
+        function speakSentence() {
+            // מניעת הגייה כפולה
+            if (isSpeaking) return;
+            isSpeaking = true;
+            
+            // עצירת כל הגייה קודמת
+            speechSynthesis.cancel();
+            
+            const sentences = sentenceCategories[currentSentenceCategory];
+            const sentence = sentences[currentSentenceIndex];
+            const utterance = new SpeechSynthesisUtterance(sentence.english);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.8; // קצב מהיר יותר לגיל 8-10
+            
+            // כשההגייה נגמרת - נאפשר הגייה חדשה
+            utterance.onend = () => {
+                isSpeaking = false;
+            };
+            
+            utterance.onerror = () => {
+                isSpeaking = false;
+            };
+            
+            speechSynthesis.speak(utterance);
+        }
+
+        // מעבר בין טאבים
+        function switchTab(tabName) {
+            currentTab = tabName;
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+            
+            if (tabName === 'quiz') {
+                restartQuiz();
+            }
+        }
+
+        // יצירת שאלת חידון - מילים ומשפטים
+        function generateQuizQuestion() {
+            answered = false;
+            
+            // בחירה אקראית בין מילים למשפטים (50%-50%)
+            const quizType = Math.random() < 0.5 ? 'words' : 'sentences';
+            
+            if (quizType === 'words') {
+                generateWordQuiz();
+            } else {
+                generateSentenceQuiz();
+            }
+        }
+
+        // חידון מילים
+        function generateWordQuiz() {
+            // איסוף כל המילים מכל הקטגוריות
+            let allWords = [];
+            Object.keys(wordCategories).forEach(category => {
+                allWords = allWords.concat(wordCategories[category]);
+            });
+            
+            // בחירת מילה אקראית שלא נשאלה לאחרונה
+            let correctWord;
+            let attempts = 0;
+            do {
+                correctWord = allWords[Math.floor(Math.random() * allWords.length)];
+                attempts++;
+                // אם ניסינו יותר מדי פעמים, נאפס את הרשימה
+                if (attempts > 50) {
+                    recentQuestions = [];
+                    break;
+                }
+            } while (recentQuestions.some(q => q.english === correctWord.english));
+            
+            // הוספה לרשימת השאלות האחרונות
+            recentQuestions.push(correctWord);
+            // שמירה על עד 10 שאלות אחרונות בלבד
+            if (recentQuestions.length > 10) {
+                recentQuestions.shift();
+            }
+            
+            // יצירת תשובות שגויות (3 במקום 2)
+            const wrongAnswers = [];
+            while (wrongAnswers.length < 3) {
+                const randomWord = allWords[Math.floor(Math.random() * allWords.length)];
+                if (randomWord !== correctWord && !wrongAnswers.includes(randomWord)) {
+                    wrongAnswers.push(randomWord);
+                }
+            }
+            
+            // ערבוב התשובות (סך הכל 4 אפשרויות)
+            const allAnswers = [correctWord, ...wrongAnswers].sort(() => Math.random() - 0.5);
+            
+            currentQuestion = {
+                correct: correctWord,
+                answers: allAnswers,
+                type: 'word'
+            };
+            
+            displayQuizQuestion();
+            // השמעה אוטומטית של השאלה
+            setTimeout(() => playQuizAudio(), 500);
+        }
+
+        // חידון משפטים
+        function generateSentenceQuiz() {
+            // איסוף כל המשפטים מכל הקטגוריות
+            let allSentences = [];
+            Object.keys(sentenceCategories).forEach(category => {
+                allSentences = allSentences.concat(sentenceCategories[category]);
+            });
+            
+            // בחירת משפט אקראי שלא נשאל לאחרונה
+            let correctSentence;
+            let attempts = 0;
+            do {
+                correctSentence = allSentences[Math.floor(Math.random() * allSentences.length)];
+                attempts++;
+                // אם ניסינו יותר מדי פעמים, נאפס את הרשימה
+                if (attempts > 50) {
+                    recentQuestions = [];
+                    break;
+                }
+            } while (recentQuestions.some(q => q.english === correctSentence.english));
+            
+            // הוספה לרשימת השאלות האחרונות
+            recentQuestions.push(correctSentence);
+            // שמירה על עד 10 שאלות אחרונות בלבד
+            if (recentQuestions.length > 10) {
+                recentQuestions.shift();
+            }
+            
+            // יצירת תשובות שגויות (3)
+            const wrongAnswers = [];
+            while (wrongAnswers.length < 3) {
+                const randomSentence = allSentences[Math.floor(Math.random() * allSentences.length)];
+                if (randomSentence !== correctSentence && !wrongAnswers.includes(randomSentence)) {
+                    wrongAnswers.push(randomSentence);
+                }
+            }
+            
+            // ערבוב התשובות (סך הכל 4 אפשרויות)
+            const allAnswers = [correctSentence, ...wrongAnswers].sort(() => Math.random() - 0.5);
+            
+            currentQuestion = {
+                correct: correctSentence,
+                answers: allAnswers,
+                type: 'sentence'
+            };
+            
+            displayQuizQuestion();
+            // השמעה אוטומטית של השאלה
+            setTimeout(() => playQuizAudio(), 500);
+        }
+
+        // השמעת השאלה
+        function playQuizAudio() {
+            // מניעת הגייה כפולה
+            if (isSpeaking) return;
+            isSpeaking = true;
+            
+            // עצירת כל הגייה קודמת
+            speechSynthesis.cancel();
+            
+            let textToSpeak;
+            if (currentQuestion.type === 'word') {
+                textToSpeak = currentQuestion.correct.english.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim();
+            } else {
+                textToSpeak = currentQuestion.correct.english;
+            }
+            
+            // הוספת נקודה בסוף כדי לאלץ עצירה
+            if (!textToSpeak.endsWith('.')) {
+                textToSpeak += '.';
+            }
+            
+            const utterance = new SpeechSynthesisUtterance(textToSpeak);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.75; // קצב בינוני לחידון
+            
+            // כשההגייה נגמרת - נאפשר הגייה חדשה
+            utterance.onend = () => {
+                isSpeaking = false;
+            };
+            
+            utterance.onerror = () => {
+                isSpeaking = false;
+            };
+            
+            speechSynthesis.speak(utterance);
+        }
+
+        // הצגת שאלת חידון
+        function displayQuizQuestion() {
+            document.getElementById('quizQuestion').textContent = 'מה התרגום?';
+            
+            const optionsDiv = document.getElementById('quizOptions');
+            optionsDiv.innerHTML = '';
+            
+            currentQuestion.answers.forEach(answer => {
+                const option = document.createElement('div');
+                option.className = 'quiz-option';
+                
+                if (currentQuestion.type === 'word') {
+                    // הצגת האימוג'י בלבד למילים
+                    const emoji = answer.english.match(/[\u{1F300}-\u{1F9FF}]/gu);
+                    option.textContent = emoji ? emoji[0] : answer.hebrew;
+                } else {
+                    // הצגת התרגום העברי למשפטים
+                    option.textContent = answer.hebrew;
+                    option.style.fontSize = '1.3em'; // טקסט קטן יותר למשפטים
+                }
+                
+                option.onclick = () => checkAnswer(answer, option);
+                optionsDiv.appendChild(option);
+            });
+        }
+
+        // בדיקת תשובה
+        function checkAnswer(selectedAnswer, optionElement) {
+            if (answered) return;
+            
+            answered = true;
+            quizTotal++;
+            
+            if (selectedAnswer === currentQuestion.correct) {
+                optionElement.classList.add('correct');
+                quizScore++;
+                // הגייה של "Excellent!"
+                setTimeout(() => {
+                    const utterance = new SpeechSynthesisUtterance('Excellent!');
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.9;
+                    speechSynthesis.speak(utterance);
+                }, 300);
+            } else {
+                optionElement.classList.add('wrong');
+                // הצגת התשובה הנכונה
+                document.querySelectorAll('.quiz-option').forEach(opt => {
+                    let correctText;
+                    if (currentQuestion.type === 'word') {
+                        const emoji = currentQuestion.correct.english.match(/[\u{1F300}-\u{1F9FF}]/gu);
+                        correctText = emoji ? emoji[0] : currentQuestion.correct.hebrew;
+                    } else {
+                        correctText = currentQuestion.correct.hebrew;
+                    }
+                    
+                    if (opt.textContent === correctText) {
+                        opt.classList.add('correct');
+                    }
+                });
+                // הגייה של "Try again!"
+                setTimeout(() => {
+                    const utterance = new SpeechSynthesisUtterance('Try again!');
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.9;
+                    speechSynthesis.speak(utterance);
+                }, 300);
+            }
+            
+            updateQuizScore();
+            
+            // בדיקה אם הגענו ל-10 שאלות
+            if (quizTotal >= MAX_QUIZ_QUESTIONS) {
+                setTimeout(() => showFinalSummary(), 2000);
+            }
+        }
+
+        // עדכון ציון
+        function updateQuizScore() {
+            const percentage = quizTotal > 0 ? Math.round((quizScore / quizTotal) * 100) : 0;
+            let emoji = percentage >= 90 ? '🏆' : percentage >= 80 ? '🌟' : percentage >= 70 ? '👍' : '💪';
+            document.getElementById('quizScore').textContent = 
+                `${emoji} ציון: ${quizScore} מתוך ${quizTotal} (${percentage}%)`;
+        }
+        
+        // הצגת סיכום סופי
+        function showFinalSummary() {
+            const percentage = Math.round((quizScore / quizTotal) * 100);
+            let emoji, message, encouragement;
+            
+            if (percentage >= 90) {
+                emoji = '🏆';
+                message = 'מעולה! ציון מושלם!';
+                encouragement = 'אתה/את כוכב אנגלית!';
+            } else if (percentage >= 80) {
+                emoji = '🌟';
+                message = 'כל הכבוד! עבודה נהדרת!';
+                encouragement = 'אתה/את לומד/ת מצוין!';
+            } else if (percentage >= 70) {
+                emoji = '👍';
+                message = 'יפה מאוד! התקדמת רבה!';
+                encouragement = 'המשך ככה!';
+            } else if (percentage >= 60) {
+                emoji = '💪';
+                message = 'התחלה טובה!';
+                encouragement = 'תמשיך לתרגל ותשתפר!';
+            } else {
+                emoji = '📚';
+                message = 'המשך ללמוד!';
+                encouragement = 'כל תרגול עוזר!';
+            }
+            
+            const quizContainer = document.querySelector('.quiz-container');
+            quizContainer.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div style="font-size: 6em; margin-bottom: 20px;">${emoji}</div>
+                    <h2 style="font-size: 2.5em; color: #667eea; margin-bottom: 20px;">${message}</h2>
+                    <div style="font-size: 3em; font-weight: bold; color: #4CAF50; margin-bottom: 20px;">
+                        ${quizScore} מתוך ${quizTotal}
+                    </div>
+                    <div style="font-size: 2em; color: #666; margin-bottom: 30px;">${percentage}%</div>
+                    <div style="font-size: 1.8em; color: #764ba2; margin-bottom: 40px;">${encouragement}</div>
+                    <button class="btn-next" style="font-size: 1.5em; padding: 20px 40px;" onclick="restartQuiz()">
+                        🔄 חידון חדש
+                    </button>
+                </div>
+            `;
+            
+            // הגייה של המסר
+            setTimeout(() => {
+                let audioMessage = percentage >= 90 ? 'Perfect score! Excellent!' : 
+                                  percentage >= 80 ? 'Great job!' : 
+                                  percentage >= 70 ? 'Well done!' : 'Keep practicing!';
+                const utterance = new SpeechSynthesisUtterance(audioMessage);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                speechSynthesis.speak(utterance);
+            }, 500);
+        }
+
+        // שאלה הבאה
+        function nextQuestion() {
+            // אם הגענו למספר המקסימלי של שאלות, לא ממשיכים
+            if (quizTotal >= MAX_QUIZ_QUESTIONS) {
+                showFinalSummary();
+                return;
+            }
+            generateQuizQuestion();
+        }
+
+        // התחלה מחדש
+        function restartQuiz() {
+            quizScore = 0;
+            quizTotal = 0;
+            recentQuestions = []; // איפוס השאלות האחרונות
+            
+            // שחזור ממשק החידון
+            const quizContainer = document.querySelector('.quiz-container');
+            quizContainer.innerHTML = `
+                <div class="quiz-instruction">🔊 לחץ על הכפתור ותשמע מילה או משפט באנגלית</div>
+                <button class="quiz-listen-btn" onclick="playQuizAudio()">🔊</button>
+                <div class="quiz-question" id="quizQuestion">מה התרגום?</div>
+                <div class="quiz-options" id="quizOptions"></div>
+                <div class="quiz-score" id="quizScore"></div>
+            `;
+            
+            updateQuizScore();
+            generateQuizQuestion();
+        }
+
+        // אתחול האפליקציה
+        init();
+    </script>
+</body>
+</html>

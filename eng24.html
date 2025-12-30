@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שיחות באנגלית - גילאי 8-10</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        /* מסך בית */
+        .home-screen {
+            display: block;
+        }
+
+        .progress-bar {
+            background: #f0f0f0;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .progress-text {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .stars {
+            font-size: 2em;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+            line-height: 1.5;
+        }
+
+        .progress-numbers {
+            font-size: 1.1em;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .category-card {
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .category-card:hover:not(.locked) {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            background: #f0f0ff;
+        }
+
+        .category-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f5f5f5;
+        }
+
+        .category-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .category-name {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .category-progress {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        /* מסך קטגוריה */
+        .category-screen {
+            display: none;
+        }
+
+        .back-btn {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: #e68900;
+        }
+
+        .conversations-list {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .conversation-item {
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .conversation-item:hover:not(.locked) {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            background: #f0f0ff;
+        }
+
+        .conversation-item.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f5f5f5;
+        }
+
+        .conversation-item.completed {
+            background: #e8f5e9;
+            border-color: #4CAF50;
+        }
+
+        .conversation-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            min-width: 50px;
+        }
+
+        .conversation-info {
+            flex: 1;
+        }
+
+        .conversation-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .conversation-subtitle {
+            font-size: 1em;
+            color: #666;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .conversation-star {
+            font-size: 2em;
+        }
+
+        /* מסך שיחה */
+        .conversation-screen {
+            display: none;
+        }
+
+        .dialogue-container {
+            background: #f9f9f9;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            min-height: 400px;
+        }
+
+        .dialogue-line {
+            margin-bottom: 25px;
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dialogue-line:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .dialogue-line.person-a {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            margin-left: 50px;
+        }
+
+        .dialogue-line.person-b {
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+            margin-right: 50px;
+        }
+
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .person-a .speaker {
+            color: #1976d2;
+        }
+
+        .person-a .speaker::before {
+            content: "🎭 דמות: ";
+        }
+
+        .person-b .speaker {
+            color: #7b1fa2;
+        }
+
+        .person-b .speaker::before {
+            content: "👦 הילד/ה: ";
+        }
+
+        .text {
+            font-size: 1.4em;
+            direction: ltr;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .translation {
+            font-size: 1.1em;
+            color: #666;
+            font-style: italic;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button:not(.back-btn) {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-complete {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-complete:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .btn-replay {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-replay:hover {
+            background: #0b7dda;
+            transform: translateY(-2px);
+        }
+
+        .export-import-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .export-import-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .export-import-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-export {
+            background: #2196F3;
+            color: white;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn-export:hover {
+            background: #0b7dda;
+            transform: translateY(-2px);
+        }
+
+        .btn-import {
+            background: #FF9800;
+            color: white;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+        }
+
+        .btn-import:hover {
+            background: #e68900;
+            transform: translateY(-2px);
+        }
+
+        .btn-reset {
+            background: #f44336;
+            color: white;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+        }
+
+        .btn-reset:hover {
+            background: #da190b;
+            transform: translateY(-2px);
+        }
+
+        #importFile {
+            display: none;
+        }
+
+        .import-instructions {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dialogue-line.person-a {
+                margin-left: 20px;
+            }
+
+            .dialogue-line.person-b {
+                margin-right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- מסך בית -->
+        <div id="homeScreen" class="home-screen">
+            <h1>💬 שיחות באנגלית 💬</h1>
+            <p class="subtitle">גילאי 8-10 - לומדים לדבר דרך שיחות מתקדמות!</p>
+
+            <div class="progress-bar">
+                <div class="progress-text">ההתקדמות שלך:</div>
+                <div class="stars" id="totalStars">⭐⭐⭐☆☆☆☆☆</div>
+                <div class="progress-numbers" id="progressNumbers">0/40 שיחות הושלמו</div>
+            </div>
+
+            <div class="categories-grid">
+                <div class="category-card" onclick="openCategory(0)">
+                    <div class="category-icon">👥</div>
+                    <div class="category-name">היכרות מפורטת</div>
+                    <div class="category-progress" id="cat0progress">0/10 שיחות</div>
+                </div>
+
+                <div class="category-card locked" id="cat1card">
+                    <div class="category-icon">📖</div>
+                    <div class="category-name">למידה ותרבות</div>
+                    <div class="category-progress" id="cat1progress">🔒 נעול</div>
+                </div>
+
+                <div class="category-card locked" id="cat2card">
+                    <div class="category-icon">🏠</div>
+                    <div class="category-name">חיי יומיום</div>
+                    <div class="category-progress" id="cat2progress">🔒 נעול</div>
+                </div>
+
+                <div class="category-card locked" id="cat3card">
+                    <div class="category-icon">🎉</div>
+                    <div class="category-name">חברה ופנאי</div>
+                    <div class="category-progress" id="cat3progress">🔒 נעול</div>
+                </div>
+            </div>
+
+            <!-- ייצוא וייבוא התקדמות -->
+            <div class="export-import-section">
+                <div class="export-import-title">💾 שמור את ההתקדמות שלך</div>
+                <div class="export-import-buttons">
+                    <button class="btn-export" onclick="exportProgress()">📥 ייצא התקדמות</button>
+                    <button class="btn-import" onclick="document.getElementById('importFile').click()">📤 ייבא התקדמות</button>
+                    <button class="btn-reset" onclick="resetProgress()">🔄 אפס הכל</button>
+                </div>
+                <input type="file" id="importFile" accept=".json" onchange="importProgress(event)">
+                <div class="import-instructions">
+                    💡 שמור את ההתקדמות שלך בקובץ, כך תוכל לשחזר אותה במכשיר אחר או אם תמחק cookies
+                </div>
+            </div>
+        </div>
+
+        <!-- מסך קטגוריה -->
+        <div id="categoryScreen" class="category-screen">
+            <button class="back-btn" onclick="backToHome()">⬅️ חזור</button>
+            <h1 id="categoryTitle">👥 היכרות מפורטת</h1>
+            <p class="subtitle" id="categorySubtitle">10 שיחות ללמידת היכרות</p>
+
+            <div class="conversations-list" id="conversationsList"></div>
+        </div>
+
+        <!-- מסך שיחה -->
+        <div id="conversationScreen" class="conversation-screen">
+            <button class="back-btn" onclick="backToCategory()">⬅️ חזור לרשימה</button>
+            <h1 id="conversationTitle">שיחה 1: היכרות עם פרטים</h1>
+            <p class="subtitle">לחץ על כל משפט כדי לשמוע</p>
+
+            <div class="dialogue-container" id="dialogueContainer"></div>
+
+            <div class="controls">
+                <button class="btn-replay" onclick="playFullConversation()">🔊 שמע את כל השיחה</button>
+                <button class="btn-complete" onclick="completeConversation()">✅ סיימתי את השיחה</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // נתוני שיחות - 40 שיחות ב-4 קטגוריות לגילאי 8-10
+        const conversations = [
+            // קטגוריה 0: היכרות מפורטת (10 שיחות)
+            {
+                category: 0,
+                title: "היכרות עם פרטים",
+                subtitle: "Detailed Introduction",
+                dialogue: [
+                    { speaker: "A", text: "Hello! My name is Sarah. What's your name?", translation: "שלום! שמי שרה. מה שמך?" },
+                    { speaker: "B", text: "Hi Sarah! I'm Michael. Nice to meet you!", translation: "היי שרה! אני מייקל. נעים להכיר!" },
+                    { speaker: "A", text: "How old are you, Michael?", translation: "בן כמה אתה, מייקל?" },
+                    { speaker: "B", text: "I'm nine years old. And you?", translation: "אני בן תשע. ואת?" },
+                    { speaker: "A", text: "I'm ten. Where do you live?", translation: "אני בת עשר. איפה אתה גר?" },
+                    { speaker: "B", text: "I live in Haifa. What about you?", translation: "אני גר בחיפה. מה איתך?" },
+                    { speaker: "A", text: "I live in Tel Aviv, near the beach!", translation: "אני גרה בתל אביב, ליד החוף!" },
+                    { speaker: "B", text: "That's wonderful! I love the beach!", translation: "זה נפלא! אני אוהב את החוף!" }
+                ]
+            },
+            {
+                category: 0,
+                title: "משפחה מורחבת",
+                subtitle: "Extended Family",
+                dialogue: [
+                    { speaker: "A", text: "Do you have any siblings?", translation: "יש לך אחים?" },
+                    { speaker: "B", text: "Yes, I have two brothers and one sister.", translation: "כן, יש לי שני אחים ואחות אחת." },
+                    { speaker: "A", text: "Wow! That's a big family!", translation: "וואו! זו משפחה גדולה!" },
+                    { speaker: "B", text: "Yes! My older brother is fifteen.", translation: "כן! האח הגדול שלי בן חמש עשרה." },
+                    { speaker: "A", text: "Do you have any pets?", translation: "יש לכם חיות מחמד?" },
+                    { speaker: "B", text: "We have a dog and two cats!", translation: "יש לנו כלב ושני חתולים!" },
+                    { speaker: "A", text: "That must be fun!", translation: "זה בטח כיפי!" },
+                    { speaker: "B", text: "It is! They're like family members!", translation: "כן! הם כמו בני משפחה!" }
+                ]
+            },
+            {
+                category: 0,
+                title: "איפה נולדת",
+                subtitle: "Where Were You Born",
+                dialogue: [
+                    { speaker: "A", text: "Were you born in Israel?", translation: "נולדת בישראל?" },
+                    { speaker: "B", text: "No, I was born in New York.", translation: "לא, נולדתי בניו יורק." },
+                    { speaker: "A", text: "Really? When did you move here?", translation: "באמת? מתי עברת לכאן?" },
+                    { speaker: "B", text: "We moved here three years ago.", translation: "עברנו לכאן לפני שלוש שנים." },
+                    { speaker: "A", text: "Do you like living in Israel?", translation: "אתה אוהב לגור בישראל?" },
+                    { speaker: "B", text: "Yes! I love it here!", translation: "כן! אני אוהב פה!" },
+                    { speaker: "A", text: "Do you miss New York?", translation: "אתה מתגעגע לניו יורק?" },
+                    { speaker: "B", text: "Sometimes, but I visit my grandparents there.", translation: "לפעמים, אבל אני מבקר את הסבתא והסבא שלי שם." }
+                ]
+            },
+            {
+                category: 0,
+                title: "שפות",
+                subtitle: "Languages",
+                dialogue: [
+                    { speaker: "A", text: "What languages do you speak?", translation: "אילו שפות אתה מדבר?" },
+                    { speaker: "B", text: "I speak Hebrew and English.", translation: "אני מדבר עברית ואנגלית." },
+                    { speaker: "A", text: "Wow! You're bilingual!", translation: "וואו! אתה דו-לשוני!" },
+                    { speaker: "B", text: "Yes, we speak both at home.", translation: "כן, אנחנו מדברים את שתיהן בבית." },
+                    { speaker: "A", text: "Which language do you prefer?", translation: "איזו שפה אתה מעדיף?" },
+                    { speaker: "B", text: "I like both equally!", translation: "אני אוהב את שתיהן באותה מידה!" },
+                    { speaker: "A", text: "Are you learning any other languages?", translation: "אתה לומד שפות נוספות?" },
+                    { speaker: "B", text: "Yes, I'm learning Spanish at school!", translation: "כן, אני לומד ספרדית בבית הספר!" }
+                ]
+            },
+            {
+                category: 0,
+                title: "תכונות אישיות",
+                subtitle: "Personal Traits",
+                dialogue: [
+                    { speaker: "A", text: "What kind of person are you?", translation: "איזה סוג של אדם אתה?" },
+                    { speaker: "B", text: "I think I'm friendly and outgoing.", translation: "אני חושב שאני ידידותי וחברותי." },
+                    { speaker: "A", text: "Do you make friends easily?", translation: "אתה מתיידד בקלות?" },
+                    { speaker: "B", text: "Yes, I love meeting new people!", translation: "כן, אני אוהב להכיר אנשים חדשים!" },
+                    { speaker: "A", text: "Are you shy or confident?", translation: "אתה ביישן או בטוח בעצמך?" },
+                    { speaker: "B", text: "I'm quite confident, actually!", translation: "אני די בטוח בעצמי, למעשה!" },
+                    { speaker: "A", text: "That's a great quality!", translation: "זו תכונה נהדרת!" },
+                    { speaker: "B", text: "Thank you! What about you?", translation: "תודה! מה איתך?" }
+                ]
+            },
+            {
+                category: 0,
+                title: "חלומות לעתיד",
+                subtitle: "Future Dreams",
+                dialogue: [
+                    { speaker: "A", text: "What do you want to be when you grow up?", translation: "מה אתה רוצה להיות כשתגדל?" },
+                    { speaker: "B", text: "I want to be a doctor!", translation: "אני רוצה להיות רופא!" },
+                    { speaker: "A", text: "That's wonderful! Why a doctor?", translation: "זה נפלא! למה רופא?" },
+                    { speaker: "B", text: "Because I want to help people!", translation: "כי אני רוצה לעזור לאנשים!" },
+                    { speaker: "A", text: "That's very noble of you!", translation: "זה מאוד אציל מצידך!" },
+                    { speaker: "B", text: "What about you? What's your dream?", translation: "מה איתך? מה החלום שלך?" },
+                    { speaker: "A", text: "I want to be a teacher!", translation: "אני רוצה להיות מורה!" },
+                    { speaker: "B", text: "That's a great choice too!", translation: "זו גם בחירה מצוינת!" }
+                ]
+            },
+            {
+                category: 0,
+                title: "מה אתה אוהב לעשות",
+                subtitle: "What You Like to Do",
+                dialogue: [
+                    { speaker: "A", text: "What do you like doing in your free time?", translation: "מה אתה אוהב לעשות בזמן הפנוי?" },
+                    { speaker: "B", text: "I love playing basketball and reading books.", translation: "אני אוהב לשחק כדורסל ולקרוא ספרים." },
+                    { speaker: "A", text: "Basketball is fun! What position do you play?", translation: "כדורסל זה כיפי! באיזה תפקיד אתה משחק?" },
+                    { speaker: "B", text: "I'm a point guard. It's very exciting!", translation: "אני פוינט גארד. זה מאוד מרגש!" },
+                    { speaker: "A", text: "What kind of books do you read?", translation: "איזה סוג ספרים אתה קורא?" },
+                    { speaker: "B", text: "I love adventure and mystery books!", translation: "אני אוהב ספרי הרפתקאות ומסתורין!" },
+                    { speaker: "A", text: "Do you have a favorite author?", translation: "יש לך סופר אהוב?" },
+                    { speaker: "B", text: "Yes, I really like Rick Riordan!", translation: "כן, אני מאוד אוהב את ריק ריוֹרדן!" }
+                ]
+            },
+            {
+                category: 0,
+                title: "מה אתה לא אוהב",
+                subtitle: "What You Don't Like",
+                dialogue: [
+                    { speaker: "A", text: "Is there anything you don't like doing?", translation: "יש משהו שאתה לא אוהב לעשות?" },
+                    { speaker: "B", text: "I don't like waking up early!", translation: "אני לא אוהב להתעורר מוקדם!" },
+                    { speaker: "A", text: "Me neither! What else?", translation: "גם אני לא! מה עוד?" },
+                    { speaker: "B", text: "I really don't like doing homework!", translation: "אני ממש לא אוהב לעשות שיעורי בית!" },
+                    { speaker: "A", text: "Everyone feels that way sometimes!", translation: "כולם מרגישים ככה לפעמים!" },
+                    { speaker: "B", text: "Do you have any dislikes?", translation: "יש לך דברים שאת לא אוהבת?" },
+                    { speaker: "A", text: "I don't like vegetables very much!", translation: "אני לא אוהבת ירקות במיוחד!" },
+                    { speaker: "B", text: "But they're good for you!", translation: "אבל הם טובים בשבילך!" }
+                ]
+            },
+            {
+                category: 0,
+                title: "יום טיפוסי",
+                subtitle: "A Typical Day",
+                dialogue: [
+                    { speaker: "A", text: "What's a typical day like for you?", translation: "איך נראה יום טיפוסי בשבילך?" },
+                    { speaker: "B", text: "I wake up at seven in the morning.", translation: "אני מתעורר בשבע בבוקר." },
+                    { speaker: "A", text: "Then what do you do?", translation: "ואז מה אתה עושה?" },
+                    { speaker: "B", text: "I eat breakfast and go to school.", translation: "אני אוכל ארוחת בוקר והולך לבית הספר." },
+                    { speaker: "A", text: "What time does school end?", translation: "באיזו שעה מסתיים בית הספר?" },
+                    { speaker: "B", text: "School ends at two o'clock.", translation: "בית הספר מסתיים בשתיים." },
+                    { speaker: "A", text: "What do you do after school?", translation: "מה אתה עושה אחרי בית הספר?" },
+                    { speaker: "B", text: "I do homework, play sports, and relax!", translation: "אני עושה שיעורי בית, משחק ספורט ונרגע!" }
+                ]
+            },
+            {
+                category: 0,
+                title: "סוף השבוע שלי",
+                subtitle: "My Weekend",
+                dialogue: [
+                    { speaker: "A", text: "How do you usually spend your weekends?", translation: "איך אתה בדרך כלל מבלה את סוף השבוע?" },
+                    { speaker: "B", text: "On Friday, I stay home and relax.", translation: "ביום שישי, אני נשאר בבית ונרגע." },
+                    { speaker: "A", text: "That sounds nice! What about Saturday?", translation: "זה נשמע נחמד! מה עם שבת?" },
+                    { speaker: "B", text: "On Saturday, I meet my friends!", translation: "בשבת, אני נפגש עם החברים שלי!" },
+                    { speaker: "A", text: "Where do you usually meet?", translation: "איפה אתם בדרך כלל נפגשים?" },
+                    { speaker: "B", text: "We go to the park or the mall.", translation: "אנחנו הולכים לפארק או לקניון." },
+                    { speaker: "A", text: "Do you do anything on Sunday?", translation: "אתם עושים משהו ביום ראשון?" },
+                    { speaker: "B", text: "Sometimes we have family activities!", translation: "לפעמים יש לנו פעילויות משפחתיות!" }
+                ]
+            },
+
+            // קטגוריה 1: למידה ותרבות (10 שיחות)
+            {
+                category: 1,
+                title: "בית הספר - מפורט",
+                subtitle: "School - Detailed",
+                dialogue: [
+                    { speaker: "A", text: "What grade are you in?", translation: "באיזו כיתה אתה?" },
+                    { speaker: "B", text: "I'm in fourth grade.", translation: "אני בכיתה ד'." },
+                    { speaker: "A", text: "Do you like your school?", translation: "אתה אוהב את בית הספר שלך?" },
+                    { speaker: "B", text: "Yes! My school is great!", translation: "כן! בית הספר שלי מצוין!" },
+                    { speaker: "A", text: "How many students are in your class?", translation: "כמה תלמידים יש בכיתה שלך?" },
+                    { speaker: "B", text: "There are twenty-five students.", translation: "יש עשרים וחמישה תלמידים." },
+                    { speaker: "A", text: "Do you have many friends there?", translation: "יש לך הרבה חברים שם?" },
+                    { speaker: "B", text: "Yes! I have a lot of good friends!", translation: "כן! יש לי הרבה חברים טובים!" }
+                ]
+            },
+            {
+                category: 1,
+                title: "שיעורי בית",
+                subtitle: "Homework",
+                dialogue: [
+                    { speaker: "A", text: "How much homework do you usually have?", translation: "כמה שיעורי בית בדרך כלל יש לך?" },
+                    { speaker: "B", text: "I usually have about one hour of homework.", translation: "בדרך כלל יש לי כשעה של שיעורי בית." },
+                    { speaker: "A", text: "When do you do your homework?", translation: "מתי אתה עושה את שיעורי הבית?" },
+                    { speaker: "B", text: "Right after school, before dinner.", translation: "מיד אחרי בית הספר, לפני ארוחת הערב." },
+                    { speaker: "A", text: "Do you need help with homework?", translation: "אתה צריך עזרה עם שיעורי הבית?" },
+                    { speaker: "B", text: "Sometimes my dad helps me with math.", translation: "לפעמים אבא שלי עוזר לי במתמטיקה." },
+                    { speaker: "A", text: "What's the hardest subject?", translation: "מה המקצוע הכי קשה?" },
+                    { speaker: "B", text: "For me, it's science!", translation: "בשבילי, זה מדעים!" }
+                ]
+            },
+            {
+                category: 1,
+                title: "מבחנים",
+                subtitle: "Tests",
+                dialogue: [
+                    { speaker: "A", text: "Do you have a test tomorrow?", translation: "יש לך מבחן מחר?" },
+                    { speaker: "B", text: "Yes, I have a math test.", translation: "כן, יש לי מבחן במתמטיקה." },
+                    { speaker: "A", text: "Are you prepared for it?", translation: "אתה מוכן אליו?" },
+                    { speaker: "B", text: "I think so. I studied a lot!", translation: "אני חושב שכן. למדתי הרבה!" },
+                    { speaker: "A", text: "Good luck! I'm sure you'll do great!", translation: "בהצלחה! אני בטוחה שתצליח!" },
+                    { speaker: "B", text: "Thank you! I hope so too!", translation: "תודה! אני מקווה שכן!" },
+                    { speaker: "A", text: "How do you prepare for tests?", translation: "איך אתה מתכונן למבחנים?" },
+                    { speaker: "B", text: "I review my notes and do practice questions.", translation: "אני עובר על הרשימות שלי ועושה שאלות תרגול." }
+                ]
+            },
+            {
+                category: 1,
+                title: "פרויקטים",
+                subtitle: "Projects",
+                dialogue: [
+                    { speaker: "A", text: "Are you working on any projects?", translation: "אתה עובד על פרויקטים?" },
+                    { speaker: "B", text: "Yes! I'm doing a science project.", translation: "כן! אני עושה פרויקט במדעים." },
+                    { speaker: "A", text: "What's your project about?", translation: "על מה הפרויקט שלך?" },
+                    { speaker: "B", text: "It's about the solar system!", translation: "זה על מערכת השמש!" },
+                    { speaker: "A", text: "That sounds interesting!", translation: "זה נשמע מעניין!" },
+                    { speaker: "B", text: "Yes! I'm making a model of the planets.", translation: "כן! אני עושה דגם של הכוכבים." },
+                    { speaker: "A", text: "When is it due?", translation: "מתי צריך להגיש?" },
+                    { speaker: "B", text: "I need to finish it by next week.", translation: "אני צריך לסיים אותו עד השבוע הבא." }
+                ]
+            },
+            {
+                category: 1,
+                title: "ספרים אהובים",
+                subtitle: "Favorite Books",
+                dialogue: [
+                    { speaker: "A", text: "What's your favorite book?", translation: "מה הספר האהוב עליך?" },
+                    { speaker: "B", text: "I love 'Harry Potter' books!", translation: "אני אוהב את ספרי 'הארי פוטר'!" },
+                    { speaker: "A", text: "Which one is your favorite?", translation: "איזה מהם האהוב עליך?" },
+                    { speaker: "B", text: "The Prisoner of Azkaban!", translation: "האסיר מאזקבאן!" },
+                    { speaker: "A", text: "That's a great book! Do you read often?", translation: "זה ספר מעולה! אתה קורא הרבה?" },
+                    { speaker: "B", text: "Yes, I read almost every day!", translation: "כן, אני קורא כמעט כל יום!" },
+                    { speaker: "A", text: "Where do you like to read?", translation: "איפה אתה אוהב לקרוא?" },
+                    { speaker: "B", text: "In my room, before I go to sleep!", translation: "בחדר שלי, לפני שאני הולך לישון!" }
+                ]
+            },
+            {
+                category: 1,
+                title: "סרטים",
+                subtitle: "Movies",
+                dialogue: [
+                    { speaker: "A", text: "Do you like watching movies?", translation: "אתה אוהב לראות סרטים?" },
+                    { speaker: "B", text: "Yes! I love watching movies!", translation: "כן! אני אוהב לראות סרטים!" },
+                    { speaker: "A", text: "What's your favorite movie?", translation: "מה הסרט האהוב עליך?" },
+                    { speaker: "B", text: "I love 'The Avengers'!", translation: "אני אוהב את 'הנוקמים'!" },
+                    { speaker: "A", text: "That's a great movie! Which superhero is your favorite?", translation: "זה סרט נהדר! מי הגיבור העל האהוב עליך?" },
+                    { speaker: "B", text: "I like Spider-Man the best!", translation: "אני הכי אוהב את ספיידרמן!" },
+                    { speaker: "A", text: "Where do you usually watch movies?", translation: "איפה אתה בדרך כלל רואה סרטים?" },
+                    { speaker: "B", text: "At home, with my family!", translation: "בבית, עם המשפחה שלי!" }
+                ]
+            },
+            {
+                category: 1,
+                title: "מוזיקה",
+                subtitle: "Music",
+                dialogue: [
+                    { speaker: "A", text: "Do you like music?", translation: "אתה אוהב מוזיקה?" },
+                    { speaker: "B", text: "Yes! I love listening to music!", translation: "כן! אני אוהב להאזין למוזיקה!" },
+                    { speaker: "A", text: "What kind of music do you like?", translation: "איזה סוג מוזיקה אתה אוהב?" },
+                    { speaker: "B", text: "I like pop and rock music!", translation: "אני אוהב מוזיקת פופ ורוק!" },
+                    { speaker: "A", text: "Do you play any musical instruments?", translation: "אתה מנגן בכלי נגינה?" },
+                    { speaker: "B", text: "Yes! I play the guitar!", translation: "כן! אני מנגן בגיטרה!" },
+                    { speaker: "A", text: "How long have you been playing?", translation: "כמה זמן אתה מנגן?" },
+                    { speaker: "B", text: "I've been playing for two years!", translation: "אני מנגן כבר שנתיים!" }
+                ]
+            },
+            {
+                category: 1,
+                title: "אמנות",
+                subtitle: "Art",
+                dialogue: [
+                    { speaker: "A", text: "Are you good at art?", translation: "אתה טוב באמנות?" },
+                    { speaker: "B", text: "I enjoy drawing and painting!", translation: "אני נהנה לצייר ולצבוע!" },
+                    { speaker: "A", text: "What do you like to draw?", translation: "מה אתה אוהב לצייר?" },
+                    { speaker: "B", text: "I like drawing landscapes and animals.", translation: "אני אוהב לצייר נופים וחיות." },
+                    { speaker: "A", text: "Have you taken any art classes?", translation: "למדת שיעורי אמנות?" },
+                    { speaker: "B", text: "Yes, I go to art class on Wednesdays!", translation: "כן, אני הולך לשיעור אמנות בימי רביעי!" },
+                    { speaker: "A", text: "Do you want to be an artist?", translation: "אתה רוצה להיות אמן?" },
+                    { speaker: "B", text: "Maybe! It would be a fun job!", translation: "אולי! זו תהיה עבודה מהנה!" }
+                ]
+            },
+            {
+                category: 1,
+                title: "מדע וטכנולוגיה",
+                subtitle: "Science and Technology",
+                dialogue: [
+                    { speaker: "A", text: "Do you like science?", translation: "אתה אוהב מדעים?" },
+                    { speaker: "B", text: "Yes! Science is fascinating!", translation: "כן! מדעים מרתקים!" },
+                    { speaker: "A", text: "What's your favorite science topic?", translation: "מה נושא המדעים האהוב עליך?" },
+                    { speaker: "B", text: "I love learning about space!", translation: "אני אוהב ללמוד על החלל!" },
+                    { speaker: "A", text: "Are you interested in technology?", translation: "אתה מתעניין בטכנולוגיה?" },
+                    { speaker: "B", text: "Yes! I love computers and robots!", translation: "כן! אני אוהב מחשבים ורובוטים!" },
+                    { speaker: "A", text: "Do you know how to code?", translation: "אתה יודע לתכנת?" },
+                    { speaker: "B", text: "A little bit. I'm learning Python!", translation: "קצת. אני לומד Python!" }
+                ]
+            },
+            {
+                category: 1,
+                title: "היסטוריה",
+                subtitle: "History",
+                dialogue: [
+                    { speaker: "A", text: "Do you enjoy history class?", translation: "אתה נהנה משיעורי היסטוריה?" },
+                    { speaker: "B", text: "Yes! I find history very interesting!", translation: "כן! אני מוצא את ההיסטוריה מאוד מעניינת!" },
+                    { speaker: "A", text: "What historical period interests you most?", translation: "איזו תקופה היסטורית מעניינת אותך הכי הרבה?" },
+                    { speaker: "B", text: "I love learning about ancient Egypt!", translation: "אני אוהב ללמוד על מצרים העתיקה!" },
+                    { speaker: "A", text: "Why ancient Egypt?", translation: "למה מצרים העתיקה?" },
+                    { speaker: "B", text: "Because of the pyramids and pharaohs!", translation: "בגלל הפירמידות והפרעונים!" },
+                    { speaker: "A", text: "Have you ever visited a museum?", translation: "ביקרת פעם במוזיאון?" },
+                    { speaker: "B", text: "Yes! I went to the Israel Museum!", translation: "כן! הלכתי למוזיאון ישראל!" }
+                ]
+            },
+
+            // קטגוריה 2: חיי יומיום (10 שיחות)
+            {
+                category: 2,
+                title: "שגרת בוקר",
+                subtitle: "Morning Routine",
+                dialogue: [
+                    { speaker: "A", text: "What time do you usually wake up?", translation: "באיזו שעה אתה בדרך כלל מתעורר?" },
+                    { speaker: "B", text: "I wake up at six-thirty.", translation: "אני מתעורר בשש וחצי." },
+                    { speaker: "A", text: "That's quite early! What do you do first?", translation: "זה די מוקדם! מה אתה עושה קודם?" },
+                    { speaker: "B", text: "I brush my teeth and wash my face.", translation: "אני מצחצח שיניים ושוטף פנים." },
+                    { speaker: "A", text: "Do you eat breakfast at home?", translation: "אתה אוכל ארוחת בוקר בבית?" },
+                    { speaker: "B", text: "Yes, I always eat cereal with milk.", translation: "כן, אני תמיד אוכל דגני בוקר עם חלב." },
+                    { speaker: "A", text: "How long does it take you to get ready?", translation: "כמה זמן לוקח לך להתכונן?" },
+                    { speaker: "B", text: "About thirty minutes in total.", translation: "בערך שלושים דקות בסך הכל." }
+                ]
+            },
+            {
+                category: 2,
+                title: "ארוחות",
+                subtitle: "Meals",
+                dialogue: [
+                    { speaker: "A", text: "What's your favorite meal of the day?", translation: "מה הארוחה האהובה עליך ביום?" },
+                    { speaker: "B", text: "I love dinner the most!", translation: "אני הכי אוהב את ארוחת הערב!" },
+                    { speaker: "A", text: "What do you usually have for dinner?", translation: "מה אתה בדרך כלל אוכל לארוחת ערב?" },
+                    { speaker: "B", text: "We often have chicken with rice and vegetables.", translation: "לעתים קרובות יש לנו עוף עם אורז וירקות." },
+                    { speaker: "A", text: "Do you help prepare the meals?", translation: "אתה עוזר להכין את הארוחות?" },
+                    { speaker: "B", text: "Sometimes I help my mom cook!", translation: "לפעמים אני עוזר לאמא שלי לבשל!" },
+                    { speaker: "A", text: "What can you cook?", translation: "מה אתה יכול לבשל?" },
+                    { speaker: "B", text: "I can make pasta and scrambled eggs!", translation: "אני יכול להכין פסטה וביצים מקושקשות!" }
+                ]
+            },
+            {
+                category: 2,
+                title: "במסעדה",
+                subtitle: "At a Restaurant",
+                dialogue: [
+                    { speaker: "A", text: "Good evening! Are you ready to order?", translation: "ערב טוב! אתם מוכנים להזמין?" },
+                    { speaker: "B", text: "Yes, please! Can I see the menu first?", translation: "כן, בבקשה! אני יכול לראות את התפריט קודם?" },
+                    { speaker: "A", text: "Of course! Here you are.", translation: "כמובן! הנה." },
+                    { speaker: "B", text: "I would like a cheeseburger with fries, please.", translation: "אני רוצה צ'יזבורגר עם צ'יפס, בבקשה." },
+                    { speaker: "A", text: "Would you like anything to drink?", translation: "תרצה משהו לשתות?" },
+                    { speaker: "B", text: "Yes, a large Coke, please.", translation: "כן, קוקה קולה גדולה, בבקשה." },
+                    { speaker: "A", text: "Anything for dessert?", translation: "משהו לקינוח?" },
+                    { speaker: "B", text: "Maybe later. Thank you!", translation: "אולי אחר כך. תודה!" }
+                ]
+            },
+            {
+                category: 2,
+                title: "קניות בחנות",
+                subtitle: "Shopping at a Store",
+                dialogue: [
+                    { speaker: "A", text: "Can I help you find something?", translation: "אני יכול לעזור לך למצוא משהו?" },
+                    { speaker: "B", text: "Yes, I'm looking for a new backpack.", translation: "כן, אני מחפש תיק גב חדש." },
+                    { speaker: "A", text: "What color would you like?", translation: "איזה צבע תרצה?" },
+                    { speaker: "B", text: "I'd like a blue one, please.", translation: "אני רוצה אחד כחול, בבקשה." },
+                    { speaker: "A", text: "We have several options. This one is very popular!", translation: "יש לנו כמה אפשרויות. זה מאוד פופולרי!" },
+                    { speaker: "B", text: "How much does it cost?", translation: "כמה זה עולה?" },
+                    { speaker: "A", text: "It's one hundred and fifty shekels.", translation: "זה מאה וחמישים שקל." },
+                    { speaker: "B", text: "Perfect! I'll take it!", translation: "מושלם! אני אקח אותו!" }
+                ]
+            },
+            {
+                category: 2,
+                title: "קניון",
+                subtitle: "Shopping Mall",
+                dialogue: [
+                    { speaker: "A", text: "Do you want to go to the mall this weekend?", translation: "אתה רוצה ללכת לקניון בסוף השבוע?" },
+                    { speaker: "B", text: "Sure! What time should we meet?", translation: "בטח! באיזו שעה נפגש?" },
+                    { speaker: "A", text: "How about eleven in the morning?", translation: "מה דעתך על אחת עשרה בבוקר?" },
+                    { speaker: "B", text: "Sounds good! Which mall?", translation: "נשמע טוב! איזה קניון?" },
+                    { speaker: "A", text: "Let's go to Azrieli Center.", translation: "בוא נלך למרכז עזריאלי." },
+                    { speaker: "B", text: "Great! What do you want to buy?", translation: "מעולה! מה אתה רוצה לקנות?" },
+                    { speaker: "A", text: "I need new shoes and maybe some clothes.", translation: "אני צריך נעליים חדשות ואולי קצת בגדים." },
+                    { speaker: "B", text: "We can also watch a movie there!", translation: "אנחנו יכולים גם לראות סרט שם!" }
+                ]
+            },
+            {
+                category: 2,
+                title: "תחבורה",
+                subtitle: "Transportation",
+                dialogue: [
+                    { speaker: "A", text: "How do you get to school?", translation: "איך אתה מגיע לבית הספר?" },
+                    { speaker: "B", text: "I usually take the bus.", translation: "אני בדרך כלל לוקח אוטובוס." },
+                    { speaker: "A", text: "Which bus do you take?", translation: "באיזה אוטובוס אתה נוסע?" },
+                    { speaker: "B", text: "I take bus number twenty-four.", translation: "אני נוסע באוטובוס מספר עשרים וארבע." },
+                    { speaker: "A", text: "How long does the journey take?", translation: "כמה זמן לוקחת הנסיעה?" },
+                    { speaker: "B", text: "About fifteen minutes.", translation: "בערך חמש עשרה דקות." },
+                    { speaker: "A", text: "Do you have a bus card?", translation: "יש לך כרטיס אוטובוס?" },
+                    { speaker: "B", text: "Yes, I use a Rav Kav card!", translation: "כן, אני משתמש בכרטיס רב קו!" }
+                ]
+            },
+            {
+                category: 2,
+                title: "כסף",
+                subtitle: "Money",
+                dialogue: [
+                    { speaker: "A", text: "Do you get pocket money?", translation: "אתה מקבל דמי כיס?" },
+                    { speaker: "B", text: "Yes, I get fifty shekels a week.", translation: "כן, אני מקבל חמישים שקל בשבוע." },
+                    { speaker: "A", text: "What do you spend it on?", translation: "על מה אתה מוציא אותם?" },
+                    { speaker: "B", text: "I save some and spend some on snacks.", translation: "אני חוסך קצת ומוציא קצת על חטיפים." },
+                    { speaker: "A", text: "Are you saving for something special?", translation: "אתה חוסך למשהו מיוחד?" },
+                    { speaker: "B", text: "Yes! I want to buy a new video game!", translation: "כן! אני רוצה לקנות משחק וידאו חדש!" },
+                    { speaker: "A", text: "How much does it cost?", translation: "כמה זה עולה?" },
+                    { speaker: "B", text: "It costs two hundred shekels.", translation: "זה עולה מאתיים שקל." }
+                ]
+            },
+            {
+                category: 2,
+                title: "אצל הרופא - מפורט",
+                subtitle: "At the Doctor - Detailed",
+                dialogue: [
+                    { speaker: "A", text: "Hello! What seems to be the problem?", translation: "שלום! מה הבעיה?" },
+                    { speaker: "B", text: "I have a sore throat and a headache.", translation: "יש לי כאב גרון וכאב ראש." },
+                    { speaker: "A", text: "How long have you been feeling like this?", translation: "כמה זמן אתה מרגיש ככה?" },
+                    { speaker: "B", text: "Since yesterday morning.", translation: "מאתמול בבוקר." },
+                    { speaker: "A", text: "Do you have a fever?", translation: "יש לך חום?" },
+                    { speaker: "B", text: "Yes, I had a fever last night.", translation: "כן, היה לי חום אתמול בלילה." },
+                    { speaker: "A", text: "You need to rest and drink lots of water.", translation: "אתה צריך לנוח ולשתות הרבה מים." },
+                    { speaker: "B", text: "Should I take any medicine?", translation: "אני צריך לקחת תרופה?" }
+                ]
+            },
+            {
+                category: 2,
+                title: "רופא שיניים",
+                subtitle: "Dentist",
+                dialogue: [
+                    { speaker: "A", text: "When was your last dental checkup?", translation: "מתי הייתה בדיקת השיניים האחרונה שלך?" },
+                    { speaker: "B", text: "About six months ago.", translation: "לפני בערך חצי שנה." },
+                    { speaker: "A", text: "Do your teeth hurt?", translation: "השיניים שלך כואבות?" },
+                    { speaker: "B", text: "No, but I have a cavity.", translation: "לא, אבל יש לי חור." },
+                    { speaker: "A", text: "We'll need to fill it. Don't worry!", translation: "נצטרך לסתום אותו. אל תדאג!" },
+                    { speaker: "B", text: "Will it hurt?", translation: "זה יכאב?" },
+                    { speaker: "A", text: "No, I'll give you anesthesia first.", translation: "לא, אני אתן לך הרדמה קודם." },
+                    { speaker: "B", text: "How can I prevent cavities?", translation: "איך אני יכול למנוע חורים?" }
+                ]
+            },
+            {
+                category: 2,
+                title: "תיקון משהו",
+                subtitle: "Fixing Something",
+                dialogue: [
+                    { speaker: "A", text: "What's wrong with your bicycle?", translation: "מה הבעיה עם האופניים שלך?" },
+                    { speaker: "B", text: "The chain came off.", translation: "השרשרת ירדה." },
+                    { speaker: "A", text: "Can you fix it yourself?", translation: "אתה יכול לתקן זאת בעצמך?" },
+                    { speaker: "B", text: "I'm not sure. It looks difficult.", translation: "אני לא בטוח. זה נראה קשה." },
+                    { speaker: "A", text: "Let me help you. It's not that hard!", translation: "תן לי לעזור לך. זה לא כל כך קשה!" },
+                    { speaker: "B", text: "Thank you! What should I do?", translation: "תודה! מה אני צריך לעשות?" },
+                    { speaker: "A", text: "First, turn the bike upside down.", translation: "ראשית, הפוך את האופניים." },
+                    { speaker: "B", text: "Okay! Then what?", translation: "בסדר! ואז מה?" }
+                ]
+            },
+
+            // קטגוריה 3: חברה ופנאי (10 שיחות)
+            {
+                category: 3,
+                title: "תכנון יציאה",
+                subtitle: "Planning an Outing",
+                dialogue: [
+                    { speaker: "A", text: "Do you want to hang out this Saturday?", translation: "אתה רוצה לבלות ביום שבת?" },
+                    { speaker: "B", text: "Sure! What do you have in mind?", translation: "בטח! מה יש לך בראש?" },
+                    { speaker: "A", text: "We could go to the beach or the park.", translation: "אנחנו יכולים ללכת לחוף או לפארק." },
+                    { speaker: "B", text: "The weather forecast says it will be sunny!", translation: "תחזית מזג האוויר אומרת שיהיה שמשי!" },
+                    { speaker: "A", text: "Great! Let's go to the beach then!", translation: "נהדר! בוא נלך לחוף אז!" },
+                    { speaker: "B", text: "What time should we meet?", translation: "באיזו שעה נפגש?" },
+                    { speaker: "A", text: "How about ten in the morning?", translation: "מה דעתך על עשר בבוקר?" },
+                    { speaker: "B", text: "Perfect! I'll bring snacks and drinks!", translation: "מושלם! אני אביא חטיפים ומשקאות!" }
+                ]
+            },
+            {
+                category: 3,
+                title: "במסיבה",
+                subtitle: "At a Party",
+                dialogue: [
+                    { speaker: "A", text: "Are you coming to my birthday party?", translation: "אתה בא למסיבת יום ההולדת שלי?" },
+                    { speaker: "B", text: "Of course! When is it?", translation: "כמובן! מתי זה?" },
+                    { speaker: "A", text: "It's next Saturday at five o'clock.", translation: "זה בשבת הבאה בחמש." },
+                    { speaker: "B", text: "Where will it be?", translation: "איפה זה יהיה?" },
+                    { speaker: "A", text: "At my house. We'll have games and food!", translation: "בבית שלי. יהיו משחקים ואוכל!" },
+                    { speaker: "B", text: "That sounds fun! What kind of games?", translation: "זה נשמע כיפי! איזה סוג משחקים?" },
+                    { speaker: "A", text: "Board games and video games!", translation: "משחקי קופסה ומשחקי וידאו!" },
+                    { speaker: "B", text: "Awesome! I'll be there!", translation: "מעולה! אני אהיה שם!" }
+                ]
+            },
+            {
+                category: 3,
+                title: "משחקי לוח",
+                subtitle: "Board Games",
+                dialogue: [
+                    { speaker: "A", text: "Do you want to play a board game?", translation: "אתה רוצה לשחק משחק קופסה?" },
+                    { speaker: "B", text: "Yes! Which game do you have?", translation: "כן! איזה משחק יש לך?" },
+                    { speaker: "A", text: "I have Monopoly, Chess, and Uno.", translation: "יש לי מונופול, שחמט, ואונו." },
+                    { speaker: "B", text: "Let's play Monopoly! It's my favorite!", translation: "בוא נשחק מונופול! זה האהוב עליי!" },
+                    { speaker: "A", text: "Okay! I'll be the banker!", translation: "בסדר! אני אהיה הבנקאי!" },
+                    { speaker: "B", text: "Which piece do you want to be?", translation: "איזה כלי אתה רוצה להיות?" },
+                    { speaker: "A", text: "I'll be the car! You can be the ship!", translation: "אני אהיה המכונית! אתה יכול להיות האונייה!" },
+                    { speaker: "B", text: "Great! Let's start!", translation: "מעולה! בוא נתחיל!" }
+                ]
+            },
+            {
+                category: 3,
+                title: "ספורט מתקדם",
+                subtitle: "Advanced Sports",
+                dialogue: [
+                    { speaker: "A", text: "What sports do you play?", translation: "באיזה ספורט אתה משחק?" },
+                    { speaker: "B", text: "I play soccer and basketball.", translation: "אני משחק כדורגל וכדורסל." },
+                    { speaker: "A", text: "Are you on any teams?", translation: "אתה בקבוצות?" },
+                    { speaker: "B", text: "Yes! I'm on the school soccer team!", translation: "כן! אני בקבוצת הכדורגל של בית הספר!" },
+                    { speaker: "A", text: "That's impressive! How often do you practice?", translation: "זה מרשים! כמה פעמים אתה מתאמן?" },
+                    { speaker: "B", text: "We practice three times a week.", translation: "אנחנו מתאמנים שלוש פעמים בשבוע." },
+                    { speaker: "A", text: "Do you have games on weekends?", translation: "יש לכם משחקים בסופי שבוע?" },
+                    { speaker: "B", text: "Yes, we play every Sunday morning!", translation: "כן, אנחנו משחקים כל יום ראשון בבוקר!" }
+                ]
+            },
+            {
+                category: 3,
+                title: "טיול מאורגן",
+                subtitle: "Organized Trip",
+                dialogue: [
+                    { speaker: "A", text: "Our class is going on a field trip!", translation: "הכיתה שלנו יוצאת לטיול!" },
+                    { speaker: "B", text: "Really? Where are you going?", translation: "באמת? לאן אתם נוסעים?" },
+                    { speaker: "A", text: "We're going to the Dead Sea!", translation: "אנחנו נוסעים לים המלח!" },
+                    { speaker: "B", text: "That sounds amazing! When is the trip?", translation: "זה נשמע מדהים! מתי הטיול?" },
+                    { speaker: "A", text: "Next month. It's a two-day trip!", translation: "בחודש הבא. זה טיול של יומיים!" },
+                    { speaker: "B", text: "Will you sleep in a hotel?", translation: "אתם תישנו במלון?" },
+                    { speaker: "A", text: "Yes! We'll stay at a hotel near the sea!", translation: "כן! נשאר במלון ליד הים!" },
+                    { speaker: "B", text: "I wish I could go too!", translation: "הלוואי שגם אני יכולתי ללכת!" }
+                ]
+            },
+            {
+                category: 3,
+                title: "טכנולוגיה",
+                subtitle: "Technology",
+                dialogue: [
+                    { speaker: "A", text: "Do you have a computer at home?", translation: "יש לך מחשב בבית?" },
+                    { speaker: "B", text: "Yes, I have a laptop!", translation: "כן, יש לי מחשב נייד!" },
+                    { speaker: "A", text: "What do you use it for?", translation: "בשביל מה אתה משתמש בו?" },
+                    { speaker: "B", text: "I use it for homework and playing games.", translation: "אני משתמש בו לשיעורי בית ומשחקים." },
+                    { speaker: "A", text: "Do you know how to program?", translation: "אתה יודע לתכנת?" },
+                    { speaker: "B", text: "A little! I'm learning Scratch at school!", translation: "קצת! אני לומד Scratch בבית הספר!" },
+                    { speaker: "A", text: "That's cool! Have you made any projects?", translation: "זה מגניב! עשית פרויקטים?" },
+                    { speaker: "B", text: "Yes! I made a simple game!", translation: "כן! עשיתי משחק פשוט!" }
+                ]
+            },
+            {
+                category: 3,
+                title: "סלולרי ואפליקציות",
+                subtitle: "Phone and Apps",
+                dialogue: [
+                    { speaker: "A", text: "Do you have a smartphone?", translation: "יש לך סמארטפון?" },
+                    { speaker: "B", text: "Yes, but I can only use it for limited time.", translation: "כן, אבל אני יכול להשתמש בו רק זמן מוגבל." },
+                    { speaker: "A", text: "What apps do you use most?", translation: "באילו אפליקציות אתה הכי משתמש?" },
+                    { speaker: "B", text: "I use WhatsApp to chat with friends.", translation: "אני משתמש בווטסאפ כדי לשוחח עם חברים." },
+                    { speaker: "A", text: "Do you play mobile games?", translation: "אתה משחק משחקי נייד?" },
+                    { speaker: "B", text: "Sometimes, but my parents limit my screen time.", translation: "לפעמים, אבל ההורים שלי מגבילים את זמן המסך שלי." },
+                    { speaker: "A", text: "That's probably good for you!", translation: "זה כנראה טוב בשבילך!" },
+                    { speaker: "B", text: "Yes, I know it's important to balance!", translation: "כן, אני יודע שחשוב לאזן!" }
+                ]
+            },
+            {
+                category: 3,
+                title: "חגים",
+                subtitle: "Holidays",
+                dialogue: [
+                    { speaker: "A", text: "What's your favorite holiday?", translation: "מה החג האהוב עליך?" },
+                    { speaker: "B", text: "I love Hanukkah the most!", translation: "אני הכי אוהב את חנוכה!" },
+                    { speaker: "A", text: "Why do you like Hanukkah?", translation: "למה אתה אוהב את חנוכה?" },
+                    { speaker: "B", text: "Because of the candles and the presents!", translation: "בגלל הנרות והמתנות!" },
+                    { speaker: "A", text: "Do you celebrate any other holidays?", translation: "אתה חוגג חגים נוספים?" },
+                    { speaker: "B", text: "Yes, Passover is also very special!", translation: "כן, פסח גם מאוד מיוחד!" },
+                    { speaker: "A", text: "What do you do on Passover?", translation: "מה אתה עושה בפסח?" },
+                    { speaker: "B", text: "We have a big family Seder!", translation: "יש לנו סדר משפחתי גדול!" }
+                ]
+            },
+            {
+                category: 3,
+                title: "חופשה",
+                subtitle: "Vacation",
+                dialogue: [
+                    { speaker: "A", text: "Where did you go on your last vacation?", translation: "לאן נסעת בחופשה האחרונה?" },
+                    { speaker: "B", text: "We went to Greece!", translation: "נסענו ליוון!" },
+                    { speaker: "A", text: "Wow! How long were you there?", translation: "וואו! כמה זמן הייתם שם?" },
+                    { speaker: "B", text: "We stayed for one week.", translation: "שהינו שבוע." },
+                    { speaker: "A", text: "What did you do there?", translation: "מה עשיתם שם?" },
+                    { speaker: "B", text: "We visited ancient ruins and swam in the sea!", translation: "ביקרנו בחורבות עתיקות ושחינו בים!" },
+                    { speaker: "A", text: "That sounds incredible!", translation: "זה נשמע מדהים!" },
+                    { speaker: "B", text: "It was! I want to go back someday!", translation: "זה היה! אני רוצה לחזור יום אחד!" }
+                ]
+            },
+            {
+                category: 3,
+                title: "חוויות מיוחדות",
+                subtitle: "Special Experiences",
+                dialogue: [
+                    { speaker: "A", text: "What's the most exciting thing you've ever done?", translation: "מה הדבר הכי מרגש שעשית אי פעם?" },
+                    { speaker: "B", text: "I went zip-lining last summer!", translation: "רכבתי על חבל הסקי בקיץ שעבר!" },
+                    { speaker: "A", text: "Weren't you scared?", translation: "לא פחדת?" },
+                    { speaker: "B", text: "A little, but it was so much fun!", translation: "קצת, אבל זה היה כל כך כיפי!" },
+                    { speaker: "A", text: "Would you do it again?", translation: "היית עושה את זה שוב?" },
+                    { speaker: "B", text: "Definitely! It was an amazing experience!", translation: "בהחלט! זו הייתה חוויה מדהימה!" },
+                    { speaker: "A", text: "What else do you want to try?", translation: "מה עוד אתה רוצה לנסות?" },
+                    { speaker: "B", text: "I want to try bungee jumping someday!", translation: "אני רוצה לנסות בנג'י ג'מפינג יום אחד!" }
+                ]
+            }
+        ];
+
+        // משתני מצב
+        let currentCategory = 0;
+        let currentConversation = 0;
+        let completedConversations = JSON.parse(localStorage.getItem('completedConversations_8-10')) || [];
+
+        // קטגוריות
+        const categories = [
+            { name: "היכרות מפורטת", icon: "👥", emoji: "👥" },
+            { name: "למידה ותרבות", icon: "📖", emoji: "📖" },
+            { name: "חיי יומיום", icon: "🏠", emoji: "🏠" },
+            { name: "חברה ופנאי", icon: "🎉", emoji: "🎉" }
+        ];
+
+        // אתחול
+        function init() {
+            updateHomeScreen();
+        }
+
+        // עדכון מסך בית
+        function updateHomeScreen() {
+            const totalStars = completedConversations.length;
+            const starsDisplay = '⭐ '.repeat(totalStars) + '☆ '.repeat(40 - totalStars);
+            document.getElementById('totalStars').textContent = starsDisplay.trim();
+            document.getElementById('progressNumbers').textContent = `${totalStars}/40 שיחות הושלמו`;
+
+            // עדכון כל קטגוריה
+            categories.forEach((cat, index) => {
+                const completed = completedConversations.filter(c => Math.floor(c / 10) === index).length;
+                document.getElementById(`cat${index}progress`).textContent = `${completed}/10 שיחות`;
+                
+                // פתיחת קטגוריה
+                const card = document.getElementById(`cat${index}card`);
+                if (index === 0 || completedConversations.filter(c => Math.floor(c / 10) === index - 1).length === 10) {
+                    if (card) {
+                        card.classList.remove('locked');
+                        card.onclick = () => openCategory(index);
+                    }
+                }
+            });
+        }
+
+        // פתיחת קטגוריה
+        function openCategory(catIndex) {
+            currentCategory = catIndex;
+            
+            // בדיקה אם הקטגוריה נעולה
+            if (catIndex > 0) {
+                const prevCompleted = completedConversations.filter(c => Math.floor(c / 10) === catIndex - 1).length;
+                if (prevCompleted < 10) return;
+            }
+            
+            document.getElementById('homeScreen').style.display = 'none';
+            document.getElementById('categoryScreen').style.display = 'block';
+            
+            const cat = categories[catIndex];
+            document.getElementById('categoryTitle').textContent = `${cat.icon} ${cat.name}`;
+            document.getElementById('categorySubtitle').textContent = `10 שיחות בנושא ${cat.name}`;
+            
+            loadConversationsList();
+        }
+
+        // טעינת רשימת שיחות
+        function loadConversationsList() {
+            const container = document.getElementById('conversationsList');
+            container.innerHTML = '';
+            
+            const catConversations = conversations.filter(c => c.category === currentCategory);
+            
+            catConversations.forEach((conv, index) => {
+                const globalIndex = currentCategory * 10 + index;
+                const isCompleted = completedConversations.includes(globalIndex);
+                const isLocked = index > 0 && !completedConversations.includes(globalIndex - 1);
+                
+                const item = document.createElement('div');
+                item.className = 'conversation-item';
+                if (isCompleted) item.classList.add('completed');
+                if (isLocked) item.classList.add('locked');
+                
+                item.innerHTML = `
+                    <div class="conversation-number">${index + 1}</div>
+                    <div class="conversation-info">
+                        <div class="conversation-title">${conv.title}</div>
+                        <div class="conversation-subtitle">${conv.subtitle}</div>
+                    </div>
+                    <div class="conversation-star">${isCompleted ? '⭐' : (isLocked ? '🔒' : '☆')}</div>
+                `;
+                
+                if (!isLocked) {
+                    item.onclick = () => openConversation(globalIndex);
+                }
+                
+                container.appendChild(item);
+            });
+        }
+
+        // פתיחת שיחה
+        function openConversation(index) {
+            currentConversation = index;
+            const conv = conversations[index];
+            
+            document.getElementById('categoryScreen').style.display = 'none';
+            document.getElementById('conversationScreen').style.display = 'block';
+            
+            document.getElementById('conversationTitle').textContent = `שיחה ${(index % 10) + 1}: ${conv.title}`;
+            
+            loadDialogue();
+        }
+
+        // טעינת דיאלוג
+        function loadDialogue() {
+            const conv = conversations[currentConversation];
+            const container = document.getElementById('dialogueContainer');
+            container.innerHTML = '';
+            
+            conv.dialogue.forEach((line, index) => {
+                const lineDiv = document.createElement('div');
+                lineDiv.className = `dialogue-line person-${line.speaker.toLowerCase()}`;
+                lineDiv.innerHTML = `
+                    <div class="speaker"></div>
+                    <div class="text">${line.text}</div>
+                    <div class="translation">${line.translation}</div>
+                `;
+                lineDiv.onclick = () => speakLine(line.text);
+                container.appendChild(lineDiv);
+            });
+        }
+
+        // הגייה של שורה
+        function speakLine(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.8;
+            speechSynthesis.speak(utterance);
+        }
+
+        // הגייה של כל השיחה
+        function playFullConversation() {
+            const conv = conversations[currentConversation];
+            let delay = 0;
+            
+            conv.dialogue.forEach((line, index) => {
+                setTimeout(() => {
+                    speakLine(line.text);
+                }, delay);
+                delay += line.text.length * 80;
+            });
+        }
+
+        // סיום שיחה
+        function completeConversation() {
+            if (!completedConversations.includes(currentConversation)) {
+                completedConversations.push(currentConversation);
+                localStorage.setItem('completedConversations_8-10', JSON.stringify(completedConversations));
+            }
+            
+            backToCategory();
+        }
+
+        // חזרה לבית
+        function backToHome() {
+            document.getElementById('categoryScreen').style.display = 'none';
+            document.getElementById('homeScreen').style.display = 'block';
+            updateHomeScreen();
+        }
+
+        // חזרה לקטגוריה
+        function backToCategory() {
+            document.getElementById('conversationScreen').style.display = 'none';
+            document.getElementById('categoryScreen').style.display = 'block';
+            loadConversationsList();
+        }
+
+        // ייצוא התקדמות
+        function exportProgress() {
+            const data = {
+                completedConversations: completedConversations,
+                exportDate: new Date().toISOString(),
+                appVersion: "8-10"
+            };
+            
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `שיחות-אנגלית-8-10-התקדמות-${new Date().toLocaleDateString('he-IL')}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('✅ ההתקדמות שלך נשמרה בהצלחה!\nהקובץ הורד למחשב שלך.');
+        }
+
+        // ייבוא התקדמות
+        function importProgress(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (!data.completedConversations || data.appVersion !== "8-10") {
+                        alert('❌ הקובץ לא תקין או לא מתאים לאפליקציה זו!');
+                        return;
+                    }
+                    
+                    completedConversations = data.completedConversations;
+                    localStorage.setItem('completedConversations_8-10', JSON.stringify(completedConversations));
+                    
+                    updateHomeScreen();
+                    
+                    alert(`✅ ההתקדמות שוחזרה בהצלחה!\n${completedConversations.length}/40 שיחות הושלמו.`);
+                    
+                } catch (error) {
+                    alert('❌ שגיאה בקריאת הקובץ!\nוודא שזה קובץ ייצוא תקין.');
+                }
+            };
+            reader.readAsText(file);
+            
+            event.target.value = '';
+        }
+
+        // איפוס התקדמות
+        function resetProgress() {
+            if (confirm('⚠️ האם אתה בטוח?\nכל ההתקדמות שלך תימחק!\n\nלפני המחיקה, מומלץ לייצא את ההתקדמות.')) {
+                if (confirm('🔴 אישור אחרון!\nזה ימחק את כל הכוכבים והתקדמות.\nבטוח?')) {
+                    completedConversations = [];
+                    localStorage.removeItem('completedConversations_8-10');
+                    updateHomeScreen();
+                    alert('✅ ההתקדמות אופסה!\nאפשר להתחיל מחדש.');
+                }
+            }
+        }
+
+        // אתחול
+        init();
+    </script>
+</body>
+</html>
