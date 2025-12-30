@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אנגלית בעננים - לימוד אנגלית לילדים</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        /* הסתרת דפים */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* עננים מרחפים */
+        .cloud {
+            position: fixed;
+            background: white;
+            border-radius: 100px;
+            opacity: 0.6;
+            animation: float 25s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 100px;
+        }
+
+        .cloud1 {
+            width: 100px;
+            height: 40px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .cloud1::before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 10px;
+        }
+
+        .cloud1::after {
+            width: 60px;
+            height: 40px;
+            top: -15px;
+            right: 10px;
+        }
+
+        .cloud2 {
+            width: 120px;
+            height: 50px;
+            top: 30%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+
+        .cloud2::before {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            left: 15px;
+        }
+
+        .cloud2::after {
+            width: 70px;
+            height: 50px;
+            top: -20px;
+            right: 15px;
+        }
+
+        .cloud3 {
+            width: 80px;
+            height: 35px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 6s;
+        }
+
+        .cloud3::before {
+            width: 45px;
+            height: 45px;
+            top: -20px;
+            left: 10px;
+        }
+
+        .cloud3::after {
+            width: 50px;
+            height: 35px;
+            top: -15px;
+            right: 10px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px);
+            }
+            50% {
+                transform: translateY(0) translateX(-10px);
+            }
+            75% {
+                transform: translateY(20px) translateX(5px);
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* כפתור חזרה */
+        .back-btn {
+            background: white;
+            color: #667eea;
+            padding: 15px 35px;
+            border-radius: 50px;
+            border: none;
+            font-weight: bold;
+            font-size: 1.2em;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            display: inline-block;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            background: #f0f0ff;
+        }
+
+        /* כותרת */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        h1 {
+            font-size: 4em;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.8em;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* תוכן */
+        .selection-area {
+            background: white;
+            border-radius: 30px;
+            padding: 60px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .selection-title {
+            text-align: center;
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .selection-subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 50px;
+        }
+
+        /* כרטיסי בחירת גיל */
+        .age-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .age-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 25px;
+            padding: 50px 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .age-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .age-card:hover::before {
+            opacity: 1;
+        }
+
+        .age-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.5);
+        }
+
+        .age-icon {
+            font-size: 7em;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .age-title {
+            font-size: 2.5em;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .age-description {
+            font-size: 1.2em;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .age-stats {
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            font-size: 1.1em;
+            color: white;
+            margin: 5px 0;
+        }
+
+        /* סקציות אפליקציות */
+        .content {
+            background: white;
+            border-radius: 30px;
+            padding: 60px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .section-description {
+            font-size: 1.4em;
+            color: #666;
+        }
+
+        /* כרטיס ענק לשיחות */
+        .hero-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 25px;
+            padding: 60px;
+            text-align: center;
+            margin-bottom: 60px;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: block;
+        }
+
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .hero-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 80px rgba(102, 126, 234, 0.5);
+        }
+
+        .hero-card:hover::before {
+            opacity: 1;
+        }
+
+        .hero-card-icon {
+            font-size: 8em;
+            margin-bottom: 25px;
+        }
+
+        .hero-card-title {
+            font-size: 3em;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .hero-card-description {
+            font-size: 1.5em;
+            color: rgba(255,255,255,0.95);
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.25);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* כרטיסי אפליקציות */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .app-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .app-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.3);
+        }
+
+        .app-card:hover::before {
+            opacity: 1;
+        }
+
+        .app-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .app-card.disabled:hover {
+            transform: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .app-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-description {
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .divider {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #667eea, transparent);
+            margin: 60px 0;
+            border-radius: 3px;
+        }
+
+        /* תכונות */
+        .features {
+            background: #f9f9f9;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 40px;
+        }
+
+        .features-title {
+            text-align: center;
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .feature-desc {
+            font-size: 1em;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .subtitle {
+                font-size: 1.3em;
+            }
+
+            .selection-area, .content {
+                padding: 30px 20px;
+            }
+
+            .age-cards {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .apps-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .hero-card {
+                padding: 40px 25px;
+            }
+
+            .hero-card-icon {
+                font-size: 6em;
+            }
+
+            .hero-card-title {
+                font-size: 2.2em;
+            }
+
+            .section-title {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- עננים מרחפים -->
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+
+    <div class="container">
+        <!-- דף הבית -->
+        <div id="home-page" class="page active">
+            <div class="header">
+                <div class="logo">☁️✨</div>
+                <h1>אנגלית בעננים</h1>
+                <p class="subtitle">לימוד אנגלית מהנה וקליל לילדים</p>
+            </div>
+
+            <div class="selection-area">
+                <h2 class="selection-title">🎯 בחר את קבוצת הגיל שלך</h2>
+                <p class="selection-subtitle">כל קבוצת גיל כוללת תוכנית לימודים מותאמת במיוחד</p>
+
+                <div class="age-cards">
+                    <div class="age-card" onclick="showPage('age-6-8')">
+                        <div class="age-icon">🌟</div>
+                        <div class="age-title">גילאי 6-8</div>
+                        <div class="age-description">
+                            מתחילים עם הבסיס!<br>
+                            שיחות פשוטות ומשחקים כיפיים
+                        </div>
+                        <div class="age-stats">
+                            <div class="stat-item">⭐ 40 שיחות בסיסיות</div>
+                            <div class="stat-item">🎮 7 אפליקציות</div>
+                            <div class="stat-item">💬 מילים ומשפטים קצרים</div>
+                        </div>
+                    </div>
+
+                    <div class="age-card" onclick="showPage('age-8-10')">
+                        <div class="age-icon">🚀</div>
+                        <div class="age-title">גילאי 8-10</div>
+                        <div class="age-description">
+                            רמה מתקדמת!<br>
+                            שיחות מורכבות ונושאים מעניינים
+                        </div>
+                        <div class="age-stats">
+                            <div class="stat-item">⭐ 40 שיחות מתקדמות</div>
+                            <div class="stat-item">🎮 7 אפליקציות</div>
+                            <div class="stat-item">💬 שיחות ארוכות ומפורטות</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="features">
+                    <h3 class="features-title">✨ מה תמצאו בפנים?</h3>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">💬</div>
+                            <div class="feature-title">שיחות אמיתיות</div>
+                            <div class="feature-desc">80 שיחות מהחיים היומיומיים</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🎧</div>
+                            <div class="feature-title">הגייה מקצועית</div>
+                            <div class="feature-desc">הגייה אמריקאית ברורה</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🎮</div>
+                            <div class="feature-title">משחקים מהנים</div>
+                            <div class="feature-desc">למידה דרך משחק וכיף</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">⭐</div>
+                            <div class="feature-title">התקדמות עם כוכבים</div>
+                            <div class="feature-desc">מעקב אחר ההתקדמות</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">📱</div>
+                            <div class="feature-title">עובד על כל מכשיר</div>
+                            <div class="feature-desc">מחשב, טאבלט, טלפון</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">💾</div>
+                            <div class="feature-title">שמירת התקדמות</div>
+                            <div class="feature-desc">גיבוי והעברה בין מכשירים</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- דף גילאי 6-8 -->
+        <div id="age-6-8" class="page">
+            <button class="back-btn" onclick="showPage('home')">⬅️ חזור לבחירת גיל</button>
+
+            <div class="header">
+                <div class="logo">🌟</div>
+                <h1>גילאי 6-8</h1>
+                <p class="subtitle">מתחילים עם הבסיס! שיחות פשוטות ומשחקים כיפיים</p>
+            </div>
+
+            <div class="content">
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">📚</div>
+                        <h2 class="section-title">אפליקציות למידה</h2>
+                        <p class="section-description">למדו את הבסיס - שמיעה, דיבור ושיחות</p>
+                    </div>
+
+                    <div class="apps-grid">
+                        <a href="https://midragmyfit-del.github.io/engl-server/eng11.html" class="app-card">
+                            <div class="app-icon">🎧</div>
+                            <div class="app-title">שמיעה</div>
+                            <div class="app-description">
+                                50 שאלות שמיעה<br>
+                                בחירה מרובה<br>
+                                תרגול הבנת הנשמע
+                            </div>
+                        </a>
+
+                        <a href="https://midragmyfit-del.github.io/engl-server/eng12.html" class="app-card">
+                            <div class="app-icon">🗣️</div>
+                            <div class="app-title">דיבור</div>
+                            <div class="app-description">
+                                50 מילים וביטויים<br>
+                                חזור אחריי<br>
+                                תרגול הגייה
+                            </div>
+                        </a>
+
+                        <a href="https://midragmyfit-del.github.io/engl-server/eng13.html" class="app-card">
+                            <div class="app-icon">💭</div>
+                            <div class="app-title">שיחות בסיס</div>
+                            <div class="app-description">
+                                10 שיחות קצרות<br>
+                                היכרות ראשונית<br>
+                                משפטים פשוטים
+                            </div>
+                        </a>
+
+                        <a href="https://midragmyfit-del.github.io/engl-server/eng14.html" class="app-card">
+                            <div class="app-icon">💬</div>
+                            <div class="app-title">40 שיחות מלאות</div>
+                            <div class="app-description">
+                                4 קטגוריות מלאות<br>
+                                מעקב התקדמות<br>
+                                ⭐ המרכז שלנו!
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">🎮</div>
+                        <h2 class="section-title">משחקי תרגול</h2>
+                        <p class="section-description">חזקו את מה שלמדתם במשחקים מהנים</p>
+                    </div>
+
+                    <div class="apps-grid">
+                        <a href="https://midragmyfit-del.github.io/engl-server/eng15.html" class="app-card">
+                            <div class="app-icon">🎴</div>
+                            <div class="app-title">זיכרון</div>
+                            <div class="app-description">
+                                12 כרטיסים<br>
+                                התאמת מילה לתמונה<br>
+                                פיתוח זיכרון
+                            </div>
+                        </a>
+
+                        <a href="https://midragmyfit-del.github.io/engl-server/eng16.html" class="app-card">
+                            <div class="app-icon">🔍</div>
+                            <div class="app-title">מצא את המילה</div>
+                            <div class="app-description">
+                                10 שאלות<br>
+                                קריאה והבנה<br>
+                                בחירה מרובה
+                            </div>
+                        </a>
+
+                        <a href="https://midragmyfit-del.github.io/engl-server/eng17.html" class="app-card">
+                            <div class="app-icon">✏️</div>
+                            <div class="app-title">איות</div>
+                            <div class="app-description">
+                                10 מילים<br>
+                                בניית מילים<br>
+                                למידת אותיות
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- דף גילאי 8-10 -->
+        <div id="age-8-10" class="page">
+            <button class="back-btn" onclick="showPage('home')">⬅️ חזור לבחירת גיל</button>
+
+            <div class="header">
+                <div class="logo">🚀</div>
+                <h1>גילאי 8-10</h1>
+                <p class="subtitle">רמה מתקדמת! שיחות מורכבות ונושאים מעניינים</p>
+            </div>
+
+            <div class="content">
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">📚</div>
+                        <h2 class="section-title">אפליקציות למידה</h2>
+                        <p class="section-description">למדו את הבסיס - שמיעה, דיבור ושיחות</p>
+                    </div>
+
+                    <div class="apps-grid">
+                        <a href="https://midragmyfit-del.github.io/engl-server/eng21.html" class="app-card">
+                            <div class="app-icon">🎧</div>
+                            <div class="app-title">שמיעה - מתקדם</div>
+                            <div class="app-description">
+                                50 שאלות מתקדמות<br>
+                                משפטים מורכבים<br>
+                                אוצר מילים עשיר
+                            </div>
+                        </a>
+
+                        <a href="https://midragmyfit-del.github.io/engl-server/eng22.html" class="app-card">
+                            <div class="app-icon">🗣️</div>
+                            <div class="app-title">דיבור - מתקדם</div>
+                            <div class="app-description">
+                                50 ביטויים מתקדמים<br>
+                                חזור אחריי<br>
+                                תרגול הגייה מורכבת
+                            </div>
+                        </a>
+
+                        <a href="https://midragmyfit-del.github.io/engl-server/eng23.html" class="app-card">
+                            <div class="app-icon">💭</div>
+                            <div class="app-title">שיחות בסיס - מתקדם</div>
+                            <div class="app-description">
+                                10 שיחות מתקדמות<br>
+                                נושאים מעמיקים<br>
+                                משפטים מורכבים
+                            </div>
+                        </a>
+
+                        <a href="https://midragmyfit-del.github.io/engl-server/eng24.html" class="app-card">
+                            <div class="app-icon">💬</div>
+                            <div class="app-title">40 שיחות מלאות</div>
+                            <div class="app-description">
+                                4 קטגוריות מלאות<br>
+                                מעקב התקדמות<br>
+                                ⭐ המרכז שלנו!
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">🎮</div>
+                        <h2 class="section-title">משחקי תרגול</h2>
+                        <p class="section-description">חזקו את מה שלמדתם במשחקים מאתגרים</p>
+                    </div>
+
+                    <div class="apps-grid">
+                        <a href="https://midragmyfit-del.github.io/engl-server/eng25.html" class="app-card">
+                            <div class="app-icon">🎴</div>
+                            <div class="app-title">זיכרון - מתקדם</div>
+                            <div class="app-description">
+                                16 כרטיסים<br>
+                                מילים מתקדמות<br>
+                                אתגר גדול יותר
+                            </div>
+                        </a>
+
+                        <a href="https://midragmyfit-del.github.io/engl-server/eng26.html" class="app-card">
+                            <div class="app-icon">🔍</div>
+                            <div class="app-title">מצא את המילה - מתקדם</div>
+                            <div class="app-description">
+                                10 שאלות<br>
+                                מילים ארוכות<br>
+                                ביטויים מורכבים
+                            </div>
+                        </a>
+
+                        <a href="https://midragmyfit-del.github.io/engl-server/eng27.html" class="app-card">
+                            <div class="app-icon">✏️</div>
+                            <div class="app-title">איות - מתקדם</div>
+                            <div class="app-description">
+                                10 מילים<br>
+                                מילים ארוכות<br>
+                                4-8 אותיות
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            // הסתר את כל הדפים
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // הצג את הדף המבוקש
+            let targetPage;
+            if (pageId === 'home') {
+                targetPage = document.getElementById('home-page');
+            } else {
+                targetPage = document.getElementById(pageId);
+            }
+            
+            if (targetPage) {
+                targetPage.classList.add('active');
+                // גלול למעלה
+                window.scrollTo(0, 0);
+            }
+        }
+    </script>
+</body>
+</html>
