@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>משחק איות - אנגלית 6-8</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            background: #f0f0f0;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .score-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .question-area {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .emoji-display {
+            font-size: 8em;
+            margin-bottom: 20px;
+            animation: bounceIn 0.6s ease;
+        }
+
+        .word-display {
+            font-size: 4em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            letter-spacing: 10px;
+            direction: ltr;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .instruction {
+            font-size: 1.5em;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .speaker-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.8em;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .speaker-btn:hover {
+            background: #45a049;
+            transform: scale(1.1);
+        }
+
+        .answer-area {
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            direction: ltr;
+        }
+
+        .letter-slot {
+            width: 60px;
+            height: 80px;
+            background: #f0f0f0;
+            border: 3px dashed #999;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            direction: ltr;
+        }
+
+        .letter-slot.filled {
+            background: #e8f5e9;
+            border: 3px solid #4CAF50;
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .letters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .letter-btn {
+            padding: 25px;
+            font-size: 2em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            direction: ltr;
+        }
+
+        .letter-btn:hover:not(.used):not(:disabled) {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .letter-btn.used {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .letter-btn.wrong {
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button:not(.letter-btn):not(.speaker-btn) {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-restart {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-restart:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .btn-clear {
+            background: #ff9800;
+            color: white;
+        }
+
+        .btn-clear:hover {
+            background: #e68900;
+            transform: translateY(-2px);
+        }
+
+        .win-screen {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .win-screen.active {
+            display: block;
+        }
+
+        .win-emoji {
+            font-size: 8em;
+            margin-bottom: 20px;
+        }
+
+        .win-message {
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .win-stats {
+            font-size: 1.5em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .emoji-display {
+                font-size: 7em;
+            }
+
+            .letters-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .letter-btn {
+                font-size: 1.5em;
+                padding: 20px;
+            }
+
+            .letter-slot {
+                width: 50px;
+                height: 70px;
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="gameScreen">
+            <h1>✏️ משחק איות ✏️</h1>
+            <p class="subtitle">אייתו את המילה! - גילאי 6-8</p>
+
+            <div class="score-board">
+                <div class="score-item">
+                    <div class="score-label">נכונות ✅</div>
+                    <div class="score-value" id="correctCount">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">שאלה 📝</div>
+                    <div class="score-value"><span id="currentQuestion">1</span>/10</div>
+                </div>
+            </div>
+
+            <div class="question-area">
+                <div class="emoji-display" id="emojiDisplay">🐕</div>
+                <div class="word-display" id="wordDisplay">DOG</div>
+                <div class="instruction">לחץ על האותיות לפי הסדר:</div>
+                <button class="speaker-btn" onclick="speakWord()">🔊 שמע</button>
+            </div>
+
+            <div class="answer-area" id="answerArea"></div>
+
+            <div class="letters-grid" id="lettersGrid"></div>
+
+            <div class="controls">
+                <button class="btn-clear" onclick="clearAnswer()">🔄 נקה</button>
+                <button class="btn-restart" onclick="restartGame()">🔄 התחל מחדש</button>
+            </div>
+        </div>
+
+        <div id="winScreen" class="win-screen">
+            <div class="win-emoji">🏆</div>
+            <div class="win-message">כל הכבוד! סיימת!</div>
+            <div class="win-stats" id="winStats"></div>
+            <div class="controls">
+                <button class="btn-restart" onclick="restartGame()">🔄 שחק שוב</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // מילים למשחק - מילים קצרות לגיל 6-8
+        const words = [
+            { word: 'DOG', emoji: '🐕' },
+            { word: 'CAT', emoji: '🐱' },
+            { word: 'SUN', emoji: '☀️' },
+            { word: 'CAR', emoji: '🚗' },
+            { word: 'BALL', emoji: '⚽' },
+            { word: 'BOOK', emoji: '📚' },
+            { word: 'TREE', emoji: '🌳' },
+            { word: 'MOON', emoji: '🌙' },
+            { word: 'STAR', emoji: '⭐' },
+            { word: 'HAND', emoji: '✋' },
+            { word: 'FISH', emoji: '🐟' },
+            { word: 'BIRD', emoji: '🐦' }
+        ];
+
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+        let questionsOrder = [];
+        let currentWord = null;
+        let userAnswer = [];
+
+        // אתחול משחק
+        function initGame() {
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            
+            // יצירת סדר אקראי של שאלות
+            questionsOrder = [...words].sort(() => Math.random() - 0.5).slice(0, 10);
+            
+            updateScoreboard();
+            loadQuestion();
+        }
+
+        // טעינת שאלה
+        function loadQuestion() {
+            if (currentQuestionIndex >= 10) {
+                showWinScreen();
+                return;
+            }
+
+            currentWord = questionsOrder[currentQuestionIndex];
+            userAnswer = [];
+            
+            // הצגת האימוג'י והמילה
+            document.getElementById('emojiDisplay').textContent = currentWord.emoji;
+            document.getElementById('wordDisplay').textContent = currentWord.word;
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            
+            // יצירת משבצות לתשובה
+            createAnswerSlots();
+            
+            // יצירת כפתורי אותיות
+            createLetterButtons();
+            
+            // הגייה אוטומטית
+            setTimeout(() => speakWord(), 500);
+        }
+
+        // יצירת משבצות לתשובה
+        function createAnswerSlots() {
+            const container = document.getElementById('answerArea');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < currentWord.word.length; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'letter-slot';
+                slot.id = `slot-${i}`;
+                container.appendChild(slot);
+            }
+        }
+
+        // יצירת כפתורי אותיות
+        function createLetterButtons() {
+            const container = document.getElementById('lettersGrid');
+            container.innerHTML = '';
+            
+            // יצירת אותיות: אותיות המילה + 2-3 אותיות נוספות
+            const correctLetters = currentWord.word.split('');
+            const allLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+            const wrongLetters = allLetters
+                .filter(l => !correctLetters.includes(l))
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3);
+            
+            const mixedLetters = [...correctLetters, ...wrongLetters]
+                .sort(() => Math.random() - 0.5);
+            
+            mixedLetters.forEach(letter => {
+                const btn = document.createElement('button');
+                btn.className = 'letter-btn';
+                btn.textContent = letter;
+                btn.onclick = () => selectLetter(letter, btn);
+                container.appendChild(btn);
+            });
+        }
+
+        // בחירת אות
+        function selectLetter(letter, btn) {
+            if (btn.classList.contains('used')) return;
+            if (userAnswer.length >= currentWord.word.length) return;
+            
+            // בדיקה אם זו האות הנכונה במקום הנכון
+            const currentPosition = userAnswer.length;
+            const correctLetter = currentWord.word[currentPosition];
+            
+            if (letter === correctLetter) {
+                // נכון!
+                userAnswer.push(letter);
+                
+                // עדכון המשבצת
+                const slot = document.getElementById(`slot-${currentPosition}`);
+                slot.textContent = letter;
+                slot.classList.add('filled');
+                
+                // סימון הכפתור כמשומש
+                btn.classList.add('used');
+                
+                // הגייה של האות
+                speakLetter(letter);
+                
+                // בדיקה אם סיימנו את המילה
+                if (userAnswer.length === currentWord.word.length) {
+                    correctAnswers++;
+                    updateScoreboard();
+                    
+                    // הגייה של המילה השלמה
+                    setTimeout(() => {
+                        speakWord();
+                        
+                        // מעבר לשאלה הבאה
+                        setTimeout(() => {
+                            currentQuestionIndex++;
+                            loadQuestion();
+                        }, 2000);
+                    }, 500);
+                }
+            } else {
+                // לא נכון!
+                btn.classList.add('wrong');
+                setTimeout(() => btn.classList.remove('wrong'), 500);
+            }
+        }
+
+        // ניקוי תשובה
+        function clearAnswer() {
+            userAnswer = [];
+            loadQuestion();
+        }
+
+        // הגייה של המילה
+        function speakWord() {
+            if (!currentWord) return;
+            
+            const utterance = new SpeechSynthesisUtterance(currentWord.word);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.6;
+            speechSynthesis.speak(utterance);
+        }
+
+        // הגייה של אות
+        function speakLetter(letter) {
+            const utterance = new SpeechSynthesisUtterance(letter);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.7;
+            speechSynthesis.speak(utterance);
+        }
+
+        // עדכון לוח ניקוד
+        function updateScoreboard() {
+            document.getElementById('correctCount').textContent = correctAnswers;
+        }
+
+        // מסך ניצחון
+        function showWinScreen() {
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('winScreen').classList.add('active');
+            
+            const percentage = Math.round((correctAnswers / 10) * 100);
+            let emoji, message;
+            
+            if (percentage >= 90) {
+                emoji = '🏆';
+                message = 'מעולה! ציון מושלם!';
+            } else if (percentage >= 80) {
+                emoji = '🌟';
+                message = 'כל הכבוד! עבודה נהדרת!';
+            } else if (percentage >= 70) {
+                emoji = '👍';
+                message = 'יפה מאוד!';
+            } else {
+                emoji = '💪';
+                message = 'התחלה טובה!';
+            }
+            
+            document.querySelector('.win-emoji').textContent = emoji;
+            document.querySelector('.win-message').textContent = message;
+            document.getElementById('winStats').innerHTML = `
+                אייתת נכון ${correctAnswers} מתוך 10 מילים!<br>
+                ${percentage}% נכונות! 🎯
+            `;
+            
+            // הגייה
+            setTimeout(() => {
+                const utterance = new SpeechSynthesisUtterance('Excellent! Perfect spelling!');
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            }, 500);
+        }
+
+        // התחלה מחדש
+        function restartGame() {
+            document.getElementById('gameScreen').style.display = 'block';
+            document.getElementById('winScreen').classList.remove('active');
+            initGame();
+        }
+
+        // אתחול
+        initGame();
+    </script>
+</body>
+</html>
